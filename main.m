@@ -1,6 +1,8 @@
-// gcc -framework Foundation --std=c99 main.m MARTNSObject.m
+// gcc -framework Foundation --std=c99 main.m MARTNSObject.m RTMethod.m
 
 #import "MARTNSObject.h"
+#import "RTMethod.h"
+
 
 static void WithPool(void (^block)(void))
 {
@@ -88,6 +90,21 @@ static void TestSetClass(void)
     [obj release];
 }
 
+static void TestMethodList(void)
+{
+    NSArray *methods = [NSObject rt_methods];
+    
+    SEL sel = @selector(description);
+    NSUInteger index = [methods indexOfObjectPassingTest: ^BOOL (id obj, NSUInteger idx, BOOL *stop) {
+        return [obj selector] == sel;
+    }];
+    TEST_ASSERT(index < [methods count]);
+    
+    RTMethod *method = [methods objectAtIndex: index];
+    TEST_ASSERT([method implementation] == [NSObject instanceMethodForSelector: sel]);
+    TEST_ASSERT([[method signature] isEqual: [NSObject instanceMethodSignatureForSelector: sel]]);
+}
+
 int main(int argc, char **argv)
 {
     @try
@@ -99,6 +116,7 @@ int main(int argc, char **argv)
             TEST(TestSetSuperclass);
             TEST(TestInstanceSize);
             TEST(TestSetClass);
+            TEST(TestMethodList);
             
             NSString *message;
             if(gFailureCount)

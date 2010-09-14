@@ -3,6 +3,8 @@
 
 #import <objc/runtime.h>
 
+#import "RTMethod.h"
+
 
 @implementation NSObject (MARuntime)
 
@@ -69,6 +71,18 @@
 + (size_t)rt_instanceSize
 {
     return class_getInstanceSize(self);
+}
+
++ (NSArray *)rt_methods
+{
+    unsigned int count;
+    Method *methods = class_copyMethodList(self, &count);
+    
+    NSMutableArray *array = [NSMutableArray array];
+    for(unsigned i = 0; i < count; i++)
+        [array addObject: [RTMethod methodWithObjCMethod: methods[i]]];
+    
+    return array;
 }
 
 - (Class)rt_class

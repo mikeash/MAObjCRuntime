@@ -14,6 +14,8 @@
 + (Class)rt_setSuperclass: (Class)newSuperclass;
 + (size_t)rt_instanceSize;
 
++ (NSArray *)rt_methods;
+
 - (Class)rt_class;
 - (Class)rt_setClass: (Class)newClass;
 
