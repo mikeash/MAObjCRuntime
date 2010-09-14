@@ -1,4 +1,4 @@
-// gcc -framework Foundation main.m MARTNSObject.m
+// gcc -framework Foundation --std=c99 main.m MARTNSObject.m
 
 #import "MARTNSObject.h"
 
