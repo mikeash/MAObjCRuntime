@@ -49,5 +49,15 @@
     objc_disposeClassPair(self);
 }
 
++ (BOOL)rt_isMetaClass
+{
+    return class_isMetaClass(self);
+}
+
+- (Class)rt_class
+{
+    return object_getClass(self);
+}
+
 @end
 

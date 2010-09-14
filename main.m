@@ -54,6 +54,13 @@ static void TestCreateClass(void)
     [subclass rt_destroyClass];
 }
 
+static void TestMetaclass(void)
+{
+    Class meta = [NSObject rt_class];
+    TEST_ASSERT([meta rt_isMetaClass]);
+    TEST_ASSERT(![NSObject rt_isMetaClass]);
+}
+
 int main(int argc, char **argv)
 {
     @try
@@ -61,6 +68,7 @@ int main(int argc, char **argv)
         WithPool(^{
             TEST(TestSubclasses);
             TEST(TestCreateClass);
+            TEST(TestMetaclass);
             
             NSString *message;
             if(gFailureCount)
