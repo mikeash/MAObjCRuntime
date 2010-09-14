@@ -61,6 +61,17 @@ static void TestMetaclass(void)
     TEST_ASSERT(![NSObject rt_isMetaClass]);
 }
 
+static void TestSetSuperclass(void)
+{
+    Class subclass = [NSObject rt_createSubclassNamed: @"MATestSubclass"];
+    
+    TEST_ASSERT(![subclass isSubclassOfClass: [NSString class]]);
+    [subclass rt_setSuperclass: [NSString class]];
+    TEST_ASSERT([subclass isSubclassOfClass: [NSString class]]);
+    
+    [subclass rt_destroyClass];
+}
+
 int main(int argc, char **argv)
 {
     @try
@@ -69,6 +80,7 @@ int main(int argc, char **argv)
             TEST(TestSubclasses);
             TEST(TestCreateClass);
             TEST(TestMetaclass);
+            TEST(TestSetSuperclass);
             
             NSString *message;
             if(gFailureCount)

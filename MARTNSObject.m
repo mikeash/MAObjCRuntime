@@ -54,6 +54,18 @@
     return class_isMetaClass(self);
 }
 
+#ifdef __clang__
+#pragma clang diagnostic push
+#endif
+#pragma GCC diagnostic ignored "-Wdeprecated-declarations"
++ (Class)rt_setSuperclass: (Class)newSuperclass
+{
+    class_setSuperclass(self, newSuperclass);
+}
+#ifdef __clang__
+#pragma clang diagnostic pop
+#endif
+
 - (Class)rt_class
 {
     return object_getClass(self);
