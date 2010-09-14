@@ -66,6 +66,11 @@
 #pragma clang diagnostic pop
 #endif
 
++ (size_t)rt_instanceSize
+{
+    return class_getInstanceSize(self);
+}
+
 - (Class)rt_class
 {
     return object_getClass(self);

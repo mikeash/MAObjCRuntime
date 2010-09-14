@@ -72,6 +72,11 @@ static void TestSetSuperclass(void)
     [subclass rt_destroyClass];
 }
 
+static void TestInstanceSize(void)
+{
+    TEST_ASSERT([NSObject rt_instanceSize] == sizeof(void *));
+}
+
 int main(int argc, char **argv)
 {
     @try
@@ -81,6 +86,7 @@ int main(int argc, char **argv)
             TEST(TestCreateClass);
             TEST(TestMetaclass);
             TEST(TestSetSuperclass);
+            TEST(TestInstanceSize);
             
             NSString *message;
             if(gFailureCount)
