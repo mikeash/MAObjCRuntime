@@ -44,12 +44,23 @@ static void TestSubclasses(void)
     TEST_ASSERT(![subs containsObject: [NSObject class]]);
 }
 
+static void TestCreateClass(void)
+{
+    Class subclass = [NSObject rt_createSubclassNamed: @"MATestSubclass"];
+    
+    TEST_ASSERT(subclass);
+    TEST_ASSERT(NSClassFromString(@"MATestSubclass"));
+    
+    [subclass rt_destroyClass];
+}
+
 int main(int argc, char **argv)
 {
     @try
     {
         WithPool(^{
             TEST(TestSubclasses);
+            TEST(TestCreateClass);
             
             NSString *message;
             if(gFailureCount)

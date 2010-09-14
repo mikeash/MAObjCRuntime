@@ -8,8 +8,7 @@
 + (NSArray *)rt_subclasses;
 
 // call these in a pair: create, fill out, then register
-+ (Class *)rt_createSubclassNamed: (NSString *)name;
-+ (void)rt_registerClass;
++ (Class)rt_createSubclassNamed: (NSString *)name;
 + (void)rt_destroyClass;
 
 + (BOOL)rt_isMetaClass;

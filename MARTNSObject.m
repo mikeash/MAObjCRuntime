@@ -37,5 +37,17 @@
     return array;
 }
 
++ (Class)rt_createSubclassNamed: (NSString *)name
+{
+    Class c = objc_allocateClassPair(self, [name UTF8String], 0);
+    objc_registerClassPair(c);
+    return c;
+}
+
++ (void)rt_destroyClass
+{
+    objc_disposeClassPair(self);
+}
+
 @end
 
