@@ -76,5 +76,10 @@
     return object_getClass(self);
 }
 
+- (Class)rt_setClass: (Class)newClass
+{
+    object_setClass(self, newClass);
+}
+
 @end
 

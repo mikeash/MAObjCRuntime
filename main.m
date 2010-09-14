@@ -77,6 +77,17 @@ static void TestInstanceSize(void)
     TEST_ASSERT([NSObject rt_instanceSize] == sizeof(void *));
 }
 
+static void TestSetClass(void)
+{
+    id obj = [[NSObject alloc] init];
+    TEST_ASSERT(![obj isKindOfClass: [NSString class]]);
+    [obj rt_setClass: [NSString class]];
+    TEST_ASSERT([obj isKindOfClass: [NSString class]]);
+    [obj rt_setClass: [NSObject class]];
+    TEST_ASSERT(![obj isKindOfClass: [NSString class]]);
+    [obj release];
+}
+
 int main(int argc, char **argv)
 {
     @try
@@ -87,6 +98,7 @@ int main(int argc, char **argv)
             TEST(TestMetaclass);
             TEST(TestSetSuperclass);
             TEST(TestInstanceSize);
+            TEST(TestSetClass);
             
             NSString *message;
             if(gFailureCount)
