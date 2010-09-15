@@ -116,6 +116,11 @@
     return [[_RTComponentsMethod alloc] initWithSelector: sel implementation: imp signature: signature];
 }
 
+- (NSString *)description
+{
+    return [NSString stringWithFormat: @"<%@ %p: %@ %p %@>", [self class], self, NSStringFromSelector([self selector]), [self implementation], [self signature]];
+}
+
 - (SEL)selector
 {
     [self doesNotRecognizeSelector: _cmd];

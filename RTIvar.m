@@ -106,6 +106,11 @@
     return [[_RTComponentsIvar alloc] initWithName: name typeEncoding: typeEncoding];
 }
 
+- (NSString *)description
+{
+    return [NSString stringWithFormat: @"<%@ %p: %@ %@ %ld>", [self class], self, [self name], [self typeEncoding], (long)[self offset]];
+}
+
 - (NSString *)name
 {
     [self doesNotRecognizeSelector: _cmd];
