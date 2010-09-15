@@ -3,7 +3,9 @@
 
 #import <objc/runtime.h>
 
+#import "RTIvar.h"
 #import "RTMethod.h"
+#import "RTUnregisteredClass.h"
 
 
 @implementation NSObject (MARuntime)
@@ -39,11 +41,15 @@
     return array;
 }
 
-+ (Class)rt_createSubclassNamed: (NSString *)name
++ (RTUnregisteredClass *)rt_createUnregisteredSubclassNamed: (NSString *)name
 {
     Class c = objc_allocateClassPair(self, [name UTF8String], 0);
-    objc_registerClassPair(c);
-    return c;
+    return [RTUnregisteredClass unregisteredClassWithClass: c];
+}
+
++ (Class)rt_createSubclassNamed: (NSString *)name
+{
+    return [[self rt_createUnregisteredSubclassNamed: name] registerClass];
 }
 
 + (void)rt_destroyClass
@@ -96,6 +102,25 @@
 + (void)rt_addMethod: (RTMethod *)method
 {
     class_addMethod(self, [method selector], [method implementation], [[method signature] UTF8String]);
+}
+
++ (NSArray *)rt_ivars
+{
+    unsigned int count;
+    Ivar *list = class_copyIvarList(self, &count);
+    
+    NSMutableArray *array = [NSMutableArray array];
+    for(unsigned i = 0; i < count; i++)
+        [array addObject: [RTIvar ivarWithObjCIvar: list[i]]];
+    
+    return array;
+}
+
++ (RTIvar *)rt_ivarForName: (NSString *)name
+{
+    Ivar ivar = class_getInstanceVariable(self, [name UTF8String]);
+    if(!ivar) return nil;
+    return [RTIvar ivarWithObjCIvar: ivar];
 }
 
 - (Class)rt_class

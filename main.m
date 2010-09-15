@@ -1,7 +1,9 @@
-// gcc -framework Foundation --std=c99 main.m MARTNSObject.m RTMethod.m
+// gcc -framework Foundation --std=c99 main.m MARTNSObject.m RTMethod.m RTIvar.m RTUnregisteredClass.m
 
 #import "MARTNSObject.h"
+#import "RTIvar.h"
 #import "RTMethod.h"
+#import "RTUnregisteredClass.h"
 
 
 static void WithPool(void (^block)(void))
@@ -151,6 +153,39 @@ static void TestSetMethod(void)
     [obj release];
 }
 
+@interface SampleClass : NSObject
+{
+    id someIvar;
+}
+@end
+@implementation SampleClass
+@end
+
+static void TestIvarQuery(void)
+{
+    NSArray *ivars = [SampleClass rt_ivars];
+    TEST_ASSERT([[ivars valueForKey: @"name"] containsObject: @"someIvar"]);
+    
+    RTIvar *ivar = [SampleClass rt_ivarForName: @"someIvar"];
+    TEST_ASSERT([[ivar name] isEqual: @"someIvar"]);
+    TEST_ASSERT([[ivar typeEncoding] isEqual: [NSString stringWithUTF8String: @encode(id)]]);
+    TEST_ASSERT([ivar offset] == sizeof(id));
+}
+
+static void TestIvarAdd(void)
+{
+    RTUnregisteredClass *unreg = [NSObject rt_createUnregisteredSubclassNamed: @"IvarAddTester"];
+    
+    [unreg addIvar: [RTIvar ivarWithName: @"testVar" encode: @encode(void *)]];
+    Class c = [unreg registerClass];
+    
+    TEST_ASSERT([[c rt_ivars] count] == 1);
+    TEST_ASSERT([c rt_instanceSize] == 2 * sizeof(void *));
+    TEST_ASSERT([[c rt_ivarForName: @"testVar"] offset] == sizeof(void *));
+    
+    [c rt_destroyClass];
+}
+
 int main(int argc, char **argv)
 {
     @try
@@ -166,6 +201,8 @@ int main(int argc, char **argv)
             TEST(TestAddMethod);
             TEST(TestMethodFetching);
             TEST(TestSetMethod);
+            TEST(TestIvarQuery);
+            TEST(TestIvarAdd);
             
             NSString *message;
             if(gFailureCount)
