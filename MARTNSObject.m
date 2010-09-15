@@ -85,6 +85,11 @@
     return array;
 }
 
++ (void)rt_addMethod: (RTMethod *)method
+{
+    class_addMethod(self, [method selector], [method implementation], [[method signature] UTF8String]);
+}
+
 - (Class)rt_class
 {
     return object_getClass(self);

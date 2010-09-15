@@ -30,9 +30,54 @@
     return method_getImplementation(_m);
 }
 
-- (NSMethodSignature *)signature
+- (NSString *)signature
 {
-    return [NSMethodSignature signatureWithObjCTypes: method_getTypeEncoding(_m)];
+    return [NSString stringWithUTF8String: method_getTypeEncoding(_m)];
+}
+
+@end
+
+@interface _RTComponentsMethod : RTMethod
+{
+    SEL _sel;
+    IMP _imp;
+    NSString *_sig;
+}
+
+@end
+
+@implementation _RTComponentsMethod
+
+- (id)initWithSelector: (SEL)sel implementation: (IMP)imp signature: (NSString *)signature
+{
+    if((self = [self init]))
+    {
+        _sel = sel;
+        _imp = imp;
+        _sig = [signature copy];
+    }
+    return self;
+}
+
+- (void)dealloc
+{
+    [_sig release];
+    [super dealloc];
+}
+
+- (SEL)selector
+{
+    return _sel;
+}
+
+- (IMP)implementation
+{
+    return _imp;
+}
+
+- (NSString *)signature
+{
+    return _sig;
 }
 
 @end
@@ -44,10 +89,21 @@
     return [[[self alloc] initWithObjCMethod: method] autorelease];
 }
 
++ (id)methodWithSelector: (SEL)sel implementation: (IMP)imp signature: (NSString *)signature
+{
+    return [[[self alloc] initWithSelector: sel implementation: imp signature: signature] autorelease];
+}
+
 - (id)initWithObjCMethod: (Method)method
 {
     [self release];
     return [[_RTObjCMethod alloc] initWithObjCMethod: method];
+}
+
+- (id)initWithSelector: (SEL)sel implementation: (IMP)imp signature: (NSString *)signature
+{
+    [self release];
+    return [[_RTComponentsMethod alloc] initWithSelector: sel implementation: imp signature: signature];
 }
 
 - (SEL)selector
@@ -62,7 +118,7 @@
     return NULL;
 }
 
-- (NSMethodSignature *)signature
+- (NSString *)signature
 {
     [self doesNotRecognizeSelector: _cmd];
     return NULL;

@@ -2,6 +2,8 @@
 #import <Foundation/Foundation.h>
 
 
+@class RTMethod;
+
 @interface NSObject (MARuntime)
 
 // includes the receiver
@@ -15,6 +17,8 @@
 + (size_t)rt_instanceSize;
 
 + (NSArray *)rt_methods;
+
++ (void)rt_addMethod: (RTMethod *)method;
 
 - (Class)rt_class;
 - (Class)rt_setClass: (Class)newClass;

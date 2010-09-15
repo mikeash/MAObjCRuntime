@@ -102,7 +102,30 @@ static void TestMethodList(void)
     
     RTMethod *method = [methods objectAtIndex: index];
     TEST_ASSERT([method implementation] == [NSObject instanceMethodForSelector: sel]);
-    TEST_ASSERT([[method signature] isEqual: [NSObject instanceMethodSignatureForSelector: sel]]);
+    TEST_ASSERT([[NSMethodSignature signatureWithObjCTypes: [[method signature] UTF8String]] isEqual: [NSObject instanceMethodSignatureForSelector: sel]]);
+}
+
+static bool gAddMethodFlag;
+
+@interface NSObject (AddMethodDecl)
+
+- (void)rt_addMethodTester;
+
+@end
+
+static void AddMethodTester(id self, SEL _cmd)
+{
+    gAddMethodFlag = YES;
+}
+
+static void TestAddMethod(void)
+{
+    gAddMethodFlag = NO;
+    
+    id obj = [[NSObject alloc] init];
+    [NSObject rt_addMethod: [RTMethod methodWithSelector: @selector(rt_addMethodTester) implementation: (IMP)AddMethodTester signature: @"v@:"]];
+    [obj rt_addMethodTester];
+    [obj release];
 }
 
 int main(int argc, char **argv)
@@ -117,6 +140,7 @@ int main(int argc, char **argv)
             TEST(TestInstanceSize);
             TEST(TestSetClass);
             TEST(TestMethodList);
+            TEST(TestAddMethod);
             
             NSString *message;
             if(gFailureCount)
