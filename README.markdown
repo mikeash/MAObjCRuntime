@@ -33,9 +33,9 @@ Modifying
 You can add new methods using +rt_addMethod:. You can modify the implementation of an existing method using the -setImplementation: method on RTMethod. Example:
 
     // swizzle out -[NSObject description] (don't do this)
-    static void NewDescription(id self, SEL _cmd)
+    static NSString *NewDescription(id self, SEL _cmd)
     {
-        NSLog(@"HELLO WORLD!");
+        return @"HELLO WORLD!";
     }
     
     Method *description = [NSObject rt_methodForSelector: @selector(description)];
