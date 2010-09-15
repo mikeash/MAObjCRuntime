@@ -17,6 +17,7 @@
 + (size_t)rt_instanceSize;
 
 + (NSArray *)rt_methods;
++ (RTMethod *)rt_methodForSelector: (SEL)sel;
 
 + (void)rt_addMethod: (RTMethod *)method;
 

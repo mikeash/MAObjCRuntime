@@ -85,6 +85,14 @@
     return array;
 }
 
++ (RTMethod *)rt_methodForSelector: (SEL)sel
+{
+    Method m = class_getInstanceMethod(self, sel);
+    if(!m) return nil;
+    
+    return [RTMethod methodWithObjCMethod: m];
+}
+
 + (void)rt_addMethod: (RTMethod *)method
 {
     class_addMethod(self, [method selector], [method implementation], [[method signature] UTF8String]);

@@ -105,6 +105,14 @@ static void TestMethodList(void)
     TEST_ASSERT([[NSMethodSignature signatureWithObjCTypes: [[method signature] UTF8String]] isEqual: [NSObject instanceMethodSignatureForSelector: sel]]);
 }
 
+static void TestMethodFetching(void)
+{
+    SEL sel = @selector(description);
+    RTMethod *method = [NSObject rt_methodForSelector: sel];
+    TEST_ASSERT([method implementation] == [NSObject instanceMethodForSelector: sel]);
+    TEST_ASSERT([[NSMethodSignature signatureWithObjCTypes: [[method signature] UTF8String]] isEqual: [NSObject instanceMethodSignatureForSelector: sel]]);
+}
+
 static bool gAddMethodFlag;
 
 @interface NSObject (AddMethodDecl)
@@ -141,6 +149,7 @@ int main(int argc, char **argv)
             TEST(TestSetClass);
             TEST(TestMethodList);
             TEST(TestAddMethod);
+            TEST(TestMethodFetching);
             
             NSString *message;
             if(gFailureCount)
