@@ -35,6 +35,11 @@
     return [NSString stringWithUTF8String: method_getTypeEncoding(_m)];
 }
 
+- (void)setImplementation: (IMP)newImp
+{
+    method_setImplementation(_m, newImp);
+}
+
 @end
 
 @interface _RTComponentsMethod : RTMethod
@@ -80,6 +85,11 @@
     return _sig;
 }
 
+- (void)setImplementation: (IMP)newImp
+{
+    _imp = newImp;
+}
+
 @end
 
 @implementation RTMethod
@@ -122,6 +132,11 @@
 {
     [self doesNotRecognizeSelector: _cmd];
     return NULL;
+}
+
+- (void)setImplementation: (IMP)newImp
+{
+    [self doesNotRecognizeSelector: _cmd];
 }
 
 @end

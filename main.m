@@ -133,6 +133,21 @@ static void TestAddMethod(void)
     id obj = [[NSObject alloc] init];
     [NSObject rt_addMethod: [RTMethod methodWithSelector: @selector(rt_addMethodTester) implementation: (IMP)AddMethodTester signature: @"v@:"]];
     [obj rt_addMethodTester];
+    TEST_ASSERT(gAddMethodFlag);
+    [obj release];
+}
+
+static void TestSetMethod(void)
+{
+    gAddMethodFlag = NO;
+    
+    id obj = [[NSObject alloc] init];
+    RTMethod *method = [NSObject rt_methodForSelector: @selector(finalize)];
+    IMP oldImp = [method implementation];
+    [method setImplementation: (IMP)AddMethodTester];
+    [obj finalize];
+    TEST_ASSERT(gAddMethodFlag);
+    [method setImplementation: oldImp];
     [obj release];
 }
 
@@ -150,6 +165,7 @@ int main(int argc, char **argv)
             TEST(TestMethodList);
             TEST(TestAddMethod);
             TEST(TestMethodFetching);
+            TEST(TestSetMethod);
             
             NSString *message;
             if(gFailureCount)

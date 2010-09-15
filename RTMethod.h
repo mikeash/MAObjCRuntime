@@ -17,4 +17,8 @@
 - (IMP)implementation;
 - (NSString *)signature;
 
+// for ObjC method instances, sets the underlying implementation
+// for selector/implementation/signature instances, just changes the pointer
+- (void)setImplementation: (IMP)newImp;
+
 @end
