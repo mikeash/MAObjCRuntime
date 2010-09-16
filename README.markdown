@@ -3,6 +3,8 @@ MAObjCRuntime
 
 MAObjCRuntime is an ObjC wrapper around the Objective-C runtime APIs. If that's confusing, it provides a nice object-oriented interface around (some of) the C functions in /usr/include/objc.
 
+MAObjCRuntime is released under a BSD license. For the official license, see the LICENSE file.
+
 Quick Start
 -----------
 
