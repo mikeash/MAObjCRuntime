@@ -121,6 +121,19 @@
     return [NSString stringWithFormat: @"<%@ %p: %@ %p %@>", [self class], self, NSStringFromSelector([self selector]), [self implementation], [self signature]];
 }
 
+- (BOOL)isEqual: (id)other
+{
+    return [other isKindOfClass: [RTMethod class]] &&
+           [self selector] == [other selector] &&
+           [self implementation] == [other implementation] &&
+           [[self signature] isEqual: [other signature]];
+}
+
+- (NSUInteger)hash
+{
+    return (NSUInteger)[self selector] ^ (NSUInteger)[self implementation] ^ [[self signature] hash];
+}
+
 - (SEL)selector
 {
     [self doesNotRecognizeSelector: _cmd];

@@ -186,6 +186,19 @@ static void TestIvarAdd(void)
     [c rt_destroyClass];
 }
 
+static void TestEquality(void)
+{
+    NSMutableSet *set = [NSMutableSet set];
+    [set addObject: [NSObject rt_methodForSelector: @selector(description)]];
+    TEST_ASSERT([set count] == 1);
+    [set addObject: [NSObject rt_ivarForName: @"isa"]];
+    TEST_ASSERT([set count] == 2);
+    [set addObject: [NSObject rt_methodForSelector: @selector(description)]];
+    TEST_ASSERT([set count] == 2);
+    [set addObject: [NSObject rt_ivarForName: @"isa"]];
+    TEST_ASSERT([set count] == 2);
+}
+
 int main(int argc, char **argv)
 {
     @try
@@ -203,6 +216,7 @@ int main(int argc, char **argv)
             TEST(TestSetMethod);
             TEST(TestIvarQuery);
             TEST(TestIvarAdd);
+            TEST(TestEquality);
             
             NSString *message;
             if(gFailureCount)
