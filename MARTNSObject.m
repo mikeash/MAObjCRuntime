@@ -130,7 +130,7 @@
 
 - (Class)rt_setClass: (Class)newClass
 {
-    object_setClass(self, newClass);
+    return object_setClass(self, newClass);
 }
 
 @end
