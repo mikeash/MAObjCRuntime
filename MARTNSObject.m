@@ -68,7 +68,7 @@
 #pragma GCC diagnostic ignored "-Wdeprecated-declarations"
 + (Class)rt_setSuperclass: (Class)newSuperclass
 {
-    class_setSuperclass(self, newSuperclass);
+    return class_setSuperclass(self, newSuperclass);
 }
 #ifdef __clang__
 #pragma clang diagnostic pop
