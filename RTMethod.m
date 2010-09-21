@@ -1,6 +1,8 @@
 
 #import "RTMethod.h"
 
+#import <stdarg.h>
+
 
 @interface _RTObjCMethod : RTMethod
 {
@@ -160,6 +162,65 @@
 - (void)setImplementation: (IMP)newImp
 {
     [self doesNotRecognizeSelector: _cmd];
+}
+
+- (void)_returnValue: (void *)retPtr sendToTarget: (id)target arguments: (va_list)args
+{
+    NSMethodSignature *signature = [target methodSignatureForSelector: [self selector]];
+    NSInvocation *invocation = [NSInvocation invocationWithMethodSignature: signature];
+    NSUInteger argumentCount = [signature numberOfArguments];
+    
+    [invocation setTarget: target];
+    [invocation setSelector: [self selector]];
+    for(NSUInteger i = 2; i < argumentCount; i++)
+    {
+        int cookie = va_arg(args, int);
+        if(cookie != RT_ARG_MAGIC_COOKIE)
+        {
+            NSLog(@"%s: incorrect magic cookie %08x; did you forget to use RTARG() around your arguments?", __func__, cookie);
+            abort();
+        }
+        const char *typeStr = va_arg(args, char *);
+        void *argPtr = va_arg(args, void *);
+        
+        NSUInteger inSize;
+        NSGetSizeAndAlignment(typeStr, &inSize, NULL);
+        NSUInteger sigSize;
+        NSGetSizeAndAlignment([signature getArgumentTypeAtIndex: i], &sigSize, NULL);
+        
+        if(inSize != sigSize)
+        {
+            NSLog(@"%s: size mismatch between passed-in argument and required argument; in type: %s (%lu) requested: %s (%lu)", __func__, typeStr, (long)inSize, [signature getArgumentTypeAtIndex: i], (long)sigSize);
+            abort();
+        }
+        
+        [invocation setArgument: argPtr atIndex: i];
+    }
+    
+    [invocation invoke];
+    
+    if([signature methodReturnLength] && retPtr)
+        [invocation getReturnValue: retPtr];
+}
+
+- (id)sendToTarget: (id)target, ...
+{
+    NSParameterAssert([[self signature] hasPrefix: [NSString stringWithUTF8String: @encode(id)]]);
+    
+    id retVal;
+    
+    va_list args;
+    va_start(args, target);
+    [self _returnValue: &retVal sendToTarget: target arguments: args];
+    va_end(args);
+}
+
+- (void)returnValue: (void *)retPtr sendToTarget: (id)target, ...
+{
+    va_list args;
+    va_start(args, target);
+    [self _returnValue: retPtr sendToTarget: target arguments: args];
+    va_end(args);
 }
 
 @end
