@@ -140,6 +140,11 @@
     return NULL;
 }
 
+- (NSString *)selectorName
+{
+    return NSStringFromSelector([self selector]);
+}
+
 - (IMP)implementation
 {
     [self doesNotRecognizeSelector: _cmd];
