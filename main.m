@@ -218,6 +218,25 @@ static void TestMessageSending(void)
     [obj2 release];
 }
 
+static void TestMessageSendingNSObjectCategory(void)
+{
+    id obj1 = [NSObject rt_sendMethod: [[NSObject rt_class] rt_methodForSelector: @selector(alloc)]];
+    id obj2;
+    [NSObject rt_returnValue: &obj2 sendMethod: [[NSObject rt_class] rt_methodForSelector: @selector(alloc)]];
+    
+    TEST_ASSERT(obj1);
+    TEST_ASSERT(obj2);
+    
+    BOOL equal;
+    [obj1 rt_returnValue: &equal sendMethod: [NSObject rt_methodForSelector: @selector(isEqual:)], RTARG(obj1)];
+    TEST_ASSERT(equal);
+    [obj1 rt_returnValue: &equal sendMethod: [NSObject rt_methodForSelector: @selector(isEqual:)], RTARG(obj2)];
+    TEST_ASSERT(!equal);
+    
+    [obj1 release];
+    [obj2 release];
+}
+
 int main(int argc, char **argv)
 {
     @try
@@ -237,6 +256,7 @@ int main(int argc, char **argv)
             TEST(TestIvarAdd);
             TEST(TestEquality);
             TEST(TestMessageSending);
+            TEST(TestMessageSendingNSObjectCategory);
             
             NSString *message;
             if(gFailureCount)

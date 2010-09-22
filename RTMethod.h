@@ -35,3 +35,10 @@
 - (void)returnValue: (void *)retPtr sendToTarget: (id)target, ...;
 
 @end
+
+@interface NSObject (RTMethodSendingAdditions)
+
+- (id)rt_sendMethod: (RTMethod *)method, ...;
+- (void)rt_returnValue: (void *)retPtr sendMethod: (RTMethod *)method, ...;
+
+@end

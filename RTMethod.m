@@ -226,3 +226,29 @@
 }
 
 @end
+
+@implementation NSObject (RTMethodSendingAdditions)
+
+- (id)rt_sendMethod: (RTMethod *)method, ...
+{
+    NSParameterAssert([[method signature] hasPrefix: [NSString stringWithUTF8String: @encode(id)]]);
+    
+    id retVal;
+    
+    va_list args;
+    va_start(args, method);
+    [method _returnValue: &retVal sendToTarget: self arguments: args];
+    va_end(args);
+    
+    return retVal;
+}
+
+- (void)rt_returnValue: (void *)retPtr sendMethod: (RTMethod *)method, ...
+{
+    va_list args;
+    va_start(args, method);
+    [method _returnValue: retPtr sendToTarget: self arguments: args];
+    va_end(args);
+}
+
+@end
