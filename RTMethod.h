@@ -41,4 +41,7 @@
 - (id)rt_sendMethod: (RTMethod *)method, ...;
 - (void)rt_returnValue: (void *)retPtr sendMethod: (RTMethod *)method, ...;
 
+- (id)rt_sendSelector: (SEL)sel, ...;
+- (void)rt_returnValue: (void *)retPtr sendSelector: (SEL)sel, ...;
+
 @end

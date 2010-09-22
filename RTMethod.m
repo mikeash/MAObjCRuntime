@@ -3,6 +3,8 @@
 
 #import <stdarg.h>
 
+#import "MARTNSObject.h"
+
 
 @interface _RTObjCMethod : RTMethod
 {
@@ -247,6 +249,30 @@
 {
     va_list args;
     va_start(args, method);
+    [method _returnValue: retPtr sendToTarget: self arguments: args];
+    va_end(args);
+}
+
+- (id)rt_sendSelector: (SEL)sel, ...
+{
+    RTMethod *method = [[self rt_class] rt_methodForSelector: sel];
+    NSParameterAssert([[method signature] hasPrefix: [NSString stringWithUTF8String: @encode(id)]]);
+    
+    id retVal;
+    
+    va_list args;
+    va_start(args, sel);
+    [method _returnValue: &retVal sendToTarget: self arguments: args];
+    va_end(args);
+    
+    return retVal;
+}
+
+- (void)rt_returnValue: (void *)retPtr sendSelector: (SEL)sel, ...
+{
+    RTMethod *method = [[self rt_class] rt_methodForSelector: sel];
+    va_list args;
+    va_start(args, sel);
     [method _returnValue: retPtr sendToTarget: self arguments: args];
     va_end(args);
 }

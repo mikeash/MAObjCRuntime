@@ -235,6 +235,20 @@ static void TestMessageSendingNSObjectCategory(void)
     
     [obj1 release];
     [obj2 release];
+    
+    obj1 = [NSObject rt_sendSelector: @selector(alloc)];
+    [NSObject rt_returnValue: &obj2 sendSelector: @selector(alloc)];
+    
+    TEST_ASSERT(obj1);
+    TEST_ASSERT(obj2);
+    
+    [obj1 rt_returnValue: &equal sendSelector: @selector(isEqual:), RTARG(obj1)];
+    TEST_ASSERT(equal);
+    [obj1 rt_returnValue: &equal sendSelector: @selector(isEqual:), RTARG(obj2)];
+    TEST_ASSERT(!equal);
+    
+    [obj1 release];
+    [obj2 release];
 }
 
 int main(int argc, char **argv)
