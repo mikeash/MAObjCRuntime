@@ -213,6 +213,8 @@
     va_start(args, target);
     [self _returnValue: &retVal sendToTarget: target arguments: args];
     va_end(args);
+    
+    return retVal;
 }
 
 - (void)returnValue: (void *)retPtr sendToTarget: (id)target, ...
