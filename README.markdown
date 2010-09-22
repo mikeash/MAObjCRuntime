@@ -49,3 +49,38 @@ Objects
 -------
 
 Two instance methods are provided as well. -rt_class exists because Apple likes to fiddle with the return value of -class, and -rt_class always gives you the right value. -rt_setClass: does pretty much what it says: sets the class of the object. It won't reallocate the object or anything, so the new class had better have a memory layout that's compatible with the old one, or else hilarity will ensue.
+
+Sending Messages
+----------------
+
+After getting a list of methods from a class, it's common to want to actually use those on instances of the class. RTMethod provides an easy method for doing this, as well as several convenience wrappers around it.
+
+The basic method for sending messages is `-[RTMethod returnValue:sendToTarget:]`. You use it like this:
+
+    RTMethod *method = ...;
+    SomeType ret;
+    [method returnValue: &ret sendToTarget: obj, RTARG(@"hello"), RTARG(42), RTARG(xyz)];
+
+It may seem odd to have the return value at the beginning of the argument list, but this comes closest to the order of the normal `ret = [obj method]` syntax.
+
+All arguments must be wrapped in the `RTARG` macro. This macro takes care of packaging up each argument so that it can survive passage through the variable argument list and also includes some extra metadata about the argument types so that the code can do some basic sanity checking. No automatic type conversions are performed. If you pass a `double` to a method that expects an `int`, this method will `abort`. That checking is only based on size, however, so if you pass a `float` where an `int` is expected, you'll just get a bad value.
+
+Note that while it's not 100% guaranteed, this code does a generally good job of detecting if you forgot to use the `RTARG` macro and warning you loudly and calling `abort` instead of simply crashing in a mysterious manner. Also note that there is no sanity checking on the return value, so it's your responsibility to ensure that you use the right type and have enough space to hold it.
+
+For methods which return an object, the `-[RTMethod sendToTarget:]` method is provided which directly returns `id` instead of making you use return-by-reference. This simplifies the calling of such methods:
+
+    RTMethod *method = ...;
+    id ret = [method sendToTarget: obj, RTARG(@"hello"), RTARG(42), RTARG(xyz)];
+
+There is also an `NSObject` category which provides methods that allows you to switch the order around to be more natural. For example:
+
+    RTMethod *method = ...;
+    id ret = [obj rt_sendMethod: method, RTARG(@"hello"), RTARG(42), RTARG(xyz)];
+
+And the same idea for `rt_returnValue:sendMethod:`.
+
+Finally, there are a pair of convenience methods that take a selector, and combine the method lookup with the actual message sending:
+
+    id ret = [obj rt_sendSelector: @selector(...), RTARG(@"hello"), RTARG(42), RTARG(xyz)];
+    SomeType ret2;
+    [obj rt_returnValue: &ret2 sendSelector: @selector(...), RTARG(12345)];
