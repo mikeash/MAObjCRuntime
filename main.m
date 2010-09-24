@@ -1,6 +1,7 @@
 // gcc -framework Foundation --std=c99 main.m MARTNSObject.m RTProtocol.m RTMethod.m RTIvar.m RTProperty.m RTUnregisteredClass.m
 
 #import "MARTNSObject.h"
+#import "RTProtocol.h"
 #import "RTIvar.h"
 #import "RTProperty.h"
 #import "RTMethod.h"
@@ -154,7 +155,14 @@ static void TestSetMethod(void)
     [obj release];
 }
 
-@interface SampleClass : NSObject
+@protocol SampleProtocol <NSObject>
++ (void)requiredClassMethod;
+- (void)requiredInstanceMethod;
+@optional
++ (void)optionalClassMethod;
+- (void)optionalInstanceMethod;
+@end
+@interface SampleClass : NSObject <SampleProtocol>
 {
     id someIvar;
 }
@@ -162,7 +170,28 @@ static void TestSetMethod(void)
 @end
 @implementation SampleClass
 @synthesize someProperty=someIvar;
++ (void)requiredClassMethod
+{
+    return;
+}
+- (void)requiredInstanceMethod
+{
+    return;
+}
 @end
+
+static void TestProtocolQuery(void)
+{
+    NSArray *protocols = [SampleClass rt_protocols];
+    TEST_ASSERT([[protocols valueForKey: @"name"] containsObject: @"SampleProtocol"]);
+    
+    Protocol *protocol = [RTProtocol protocolWithObjCProtocol: NSProtocolFromString(@"SampleProtocol")];
+    TEST_ASSERT([[protocol incorporatedProtocols] containsObject: [RTProtocol protocolWithObjCProtocol: NSProtocolFromString(@"NSObject")]]);
+    TEST_ASSERT([[[protocol methodsRequired: YES instance: YES] valueForKey: @"selectorName"] containsObject: @"requiredInstanceMethod"]);
+    TEST_ASSERT([[[protocol methodsRequired: YES instance: NO] valueForKey: @"selectorName"] containsObject: @"requiredClassMethod"]);
+    TEST_ASSERT([[[protocol methodsRequired: NO instance: YES] valueForKey: @"selectorName"] containsObject: @"optionalInstanceMethod"]);
+    TEST_ASSERT([[[protocol methodsRequired: NO instance: NO] valueForKey: @"selectorName"] containsObject: @"optionalClassMethod"]);
+}
 
 static void TestIvarQuery(void)
 {
@@ -281,6 +310,7 @@ int main(int argc, char **argv)
             TEST(TestAddMethod);
             TEST(TestMethodFetching);
             TEST(TestSetMethod);
+            TEST(TestProtocolQuery);
             TEST(TestIvarQuery);
             TEST(TestPropertyQuery);
             TEST(TestIvarAdd);

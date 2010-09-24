@@ -2,6 +2,7 @@
 #import <Foundation/Foundation.h>
 
 
+@class RTProtocol;
 @class RTIvar;
 @class RTProperty;
 @class RTMethod;
@@ -19,6 +20,8 @@
 + (BOOL)rt_isMetaClass;
 + (Class)rt_setSuperclass: (Class)newSuperclass;
 + (size_t)rt_instanceSize;
+
++ (NSArray *)rt_protocols;
 
 + (NSArray *)rt_methods;
 + (RTMethod *)rt_methodForSelector: (SEL)sel;
