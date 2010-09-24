@@ -28,11 +28,6 @@
     return [NSString stringWithUTF8String: property_getTypeEncoding(_property)];
 }
 
-- (ptrdiff_t)offset
-{
-    return property_getOffset(_property);
-}
-
 @end
 
 @interface _RTComponentsProperty : RTProperty
@@ -71,11 +66,6 @@
     return _typeEncoding;
 }
 
-- (ptrdiff_t)offset
-{
-    return -1;
-}
-
 @end
 
 @implementation RTProperty
@@ -108,7 +98,7 @@
 
 - (NSString *)description
 {
-    return [NSString stringWithFormat: @"<%@ %p: %@ %@ %ld>", [self class], self, [self name], [self typeEncoding], (long)[self offset]];
+    return [NSString stringWithFormat: @"<%@ %p: %@ %@>", [self class], self, [self name], [self typeEncoding]];
 }
 
 - (BOOL)isEqual: (id)other
@@ -133,12 +123,6 @@
 {
     [self doesNotRecognizeSelector: _cmd];
     return nil;
-}
-
-- (ptrdiff_t)offset
-{
-    [self doesNotRecognizeSelector: _cmd];
-    return 0;
 }
 
 @end

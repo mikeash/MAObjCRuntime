@@ -16,6 +16,5 @@
 
 - (NSString *)name;
 - (NSString *)typeEncoding;
-- (ptrdiff_t)offset;
 
 @end
