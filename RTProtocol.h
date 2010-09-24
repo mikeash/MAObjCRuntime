@@ -7,6 +7,8 @@
 {
 }
 
++ (NSArray *)allProtocols;
+
 + (id)protocolWithObjCProtocol: (Protocol *)protocol;
 + (id)protocolWithName: (NSString *)name;
 

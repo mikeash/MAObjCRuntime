@@ -29,6 +29,19 @@
 
 @implementation RTProtocol
 
++ (NSArray *)allProtocols
+{
+    unsigned int count;
+    Protocol **protocols = objc_copyProtocolList(&count);
+    
+    NSMutableArray *array = [NSMutableArray array];
+    for(unsigned i = 0; i < count; i++)
+        [array addObject: [[[self alloc] initWithObjCProtocol: protocols[i]] autorelease]];
+    
+    free(protocols);
+    return array;
+}
+
 + (id)protocolWithObjCProtocol: (Protocol *)protocol
 {
     return [[[self alloc] initWithObjCProtocol: protocol] autorelease];
