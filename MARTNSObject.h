@@ -3,6 +3,7 @@
 
 
 @class RTIvar;
+@class RTProperty;
 @class RTMethod;
 @class RTUnregisteredClass;
 
@@ -26,6 +27,9 @@
 
 + (NSArray *)rt_ivars;
 + (RTIvar *)rt_ivarForName: (NSString *)name;
+
++ (NSArray *)rt_properties;
++ (RTProperty *)rt_propertyForName: (NSString *)name;
 
 // Apple likes to fiddle with -class to hide their dynamic subclasses
 // e.g. KVO subclasses, so [obj class] can lie to you
