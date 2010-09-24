@@ -89,6 +89,7 @@
     for(unsigned i = 0; i < count; i++)
         [array addObject: [RTMethod methodWithObjCMethod: methods[i]]];
     
+    free(methods);
     return array;
 }
 
@@ -114,6 +115,7 @@
     for(unsigned i = 0; i < count; i++)
         [array addObject: [RTIvar ivarWithObjCIvar: list[i]]];
     
+    free(list);
     return array;
 }
 
@@ -133,6 +135,7 @@
     for(unsigned i = 0; i < count; i++)
         [array addObject: [RTProperty propertyWithObjCProperty: list[i]]];
     
+    free(list);
     return array;
 }
 
