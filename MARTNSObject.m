@@ -4,6 +4,7 @@
 #import <objc/runtime.h>
 
 #import "RTIvar.h"
+#import "RTProperty.h"
 #import "RTMethod.h"
 #import "RTUnregisteredClass.h"
 
@@ -121,6 +122,25 @@
     Ivar ivar = class_getInstanceVariable(self, [name UTF8String]);
     if(!ivar) return nil;
     return [RTIvar ivarWithObjCIvar: ivar];
+}
+
++ (NSArray *)rt_properties
+{
+    unsigned int count;
+    objc_property_t *list = class_copyPropertyList(self, &count);
+    
+    NSMutableArray *array = [NSMutableArray array];
+    for(unsigned i = 0; i < count; i++)
+        [array addObject: [RTProperty propertyWithObjCProperty: list[i]]];
+    
+    return array;
+}
+
++ (RTProperty *)rt_propertyForName: (NSString *)name
+{
+    objc_property_t property = class_getProperty(self, [name UTF8String]);
+    if(!property) return nil;
+    return [RTProperty propertyWithObjCProperty: property];
 }
 
 - (Class)rt_class

@@ -1,7 +1,8 @@
-// gcc -framework Foundation --std=c99 main.m MARTNSObject.m RTMethod.m RTIvar.m RTUnregisteredClass.m
+// gcc -framework Foundation --std=c99 main.m MARTNSObject.m RTMethod.m RTIvar.m RTProperty.m RTUnregisteredClass.m
 
 #import "MARTNSObject.h"
 #import "RTIvar.h"
+#import "RTProperty.h"
 #import "RTMethod.h"
 #import "RTUnregisteredClass.h"
 
@@ -157,8 +158,10 @@ static void TestSetMethod(void)
 {
     id someIvar;
 }
+@property (assign, getter=customGetter) id someProperty;
 @end
 @implementation SampleClass
+@synthesize someProperty=someIvar;
 @end
 
 static void TestIvarQuery(void)
@@ -170,6 +173,18 @@ static void TestIvarQuery(void)
     TEST_ASSERT([[ivar name] isEqual: @"someIvar"]);
     TEST_ASSERT([[ivar typeEncoding] isEqual: [NSString stringWithUTF8String: @encode(id)]]);
     TEST_ASSERT([ivar offset] == sizeof(id));
+}
+
+static void TestPropertyQuery(void)
+{
+    NSArray *properties = [SampleClass rt_properties];
+    TEST_ASSERT([[properties valueForKey: @"name"] containsObject: @"someProperty"]);
+    
+    RTProperty *property = [SampleClass rt_propertyForName: @"someProperty"];
+    TEST_ASSERT([[property name] isEqual: @"someProperty"]);
+    TEST_ASSERT([[property attributeEncodings] isEqual: @"GcustomGetter"]);
+    TEST_ASSERT([[property typeEncoding] isEqual: [NSString stringWithUTF8String: @encode(id)]]);
+    TEST_ASSERT([[property ivarName] isEqual: @"someIvar"]);
 }
 
 static void TestIvarAdd(void)
@@ -267,6 +282,7 @@ int main(int argc, char **argv)
             TEST(TestMethodFetching);
             TEST(TestSetMethod);
             TEST(TestIvarQuery);
+            TEST(TestPropertyQuery);
             TEST(TestIvarAdd);
             TEST(TestEquality);
             TEST(TestMessageSending);
