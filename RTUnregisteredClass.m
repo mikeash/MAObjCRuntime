@@ -1,6 +1,7 @@
 
 #import "RTUnregisteredClass.h"
 
+#import "RTProtocol.h"
 #import "RTIvar.h"
 #import "RTMethod.h"
 
@@ -19,6 +20,11 @@
         _class = c;
     }
     return self;
+}
+
+- (void)addProtocol: (RTProtocol *)protocol
+{
+    class_addProtocol(_class, [protocol objCProtocol]);
 }
 
 - (void)addIvar: (RTIvar *)ivar
