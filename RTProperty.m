@@ -32,23 +32,33 @@
     return [attributes substringWithRange:range];
 }
 
+- (NSString *)ivarName
+{
+    NSString *attributes = [NSString stringWithUTF8String: property_getAttributes(_property)];
+    NSRange range = [attributes rangeOfString:@",V"];
+    if(range.location == NSNotFound) return nil;
+    return [attributes substringFromIndex:(range.location + range.length)];
+}
+
 @end
 
 @interface _RTComponentsProperty : RTProperty
 {
     NSString *_name;
     NSString *_typeEncoding;
+    NSString *_ivarName;
 }
 @end
 
 @implementation _RTComponentsProperty
 
-- (id)initWithName: (NSString *)name typeEncoding: (NSString *)typeEncoding
+- (id)initWithName: (NSString *)name typeEncoding: (NSString *)typeEncoding ivarName: (NSString *)ivarName
 {
     if((self = [self init]))
     {
         _name = [name copy];
         _typeEncoding = [typeEncoding copy];
+        _ivarName = [ivarName copy];
     }
     return self;
 }
@@ -57,6 +67,7 @@
 {
     [_name release];
     [_typeEncoding release];
+    [_ivarName release];
     [super dealloc];
 }
 
@@ -70,6 +81,11 @@
     return _typeEncoding;
 }
 
+- (NSString *)ivarName
+{
+    return _ivarName;
+}
+
 @end
 
 @implementation RTProperty
@@ -79,9 +95,14 @@
     return [[[self alloc] initWithObjCProperty: property] autorelease];
 }
 
++ (id)propertyWithName: (NSString *)name typeEncoding: (NSString *)typeEncoding ivarName: (NSString *)ivarName
+{
+    return [[[self alloc] initWithName: name typeEncoding: typeEncoding ivarName: ivarName] autorelease];
+}
+
 + (id)propertyWithName: (NSString *)name typeEncoding: (NSString *)typeEncoding
 {
-    return [[[self alloc] initWithName: name typeEncoding: typeEncoding] autorelease];
+    return [[self propertyWithName: name typeEncoding: typeEncoding ivarName: nil] autorelease];
 }
 
 + (id)propertyWithName: (NSString *)name encode: (const char *)encodeStr
@@ -95,21 +116,27 @@
     return [[_RTObjCProperty alloc] initWithObjCProperty: property];
 }
 
+- (id)initWithName: (NSString *)name typeEncoding: (NSString *)typeEncoding ivarName: (NSString *)ivarName
+{
+    return [[_RTComponentsProperty alloc] initWithName: name typeEncoding: typeEncoding ivarName: ivarName];
+}
+
 - (id)initWithName: (NSString *)name typeEncoding: (NSString *)typeEncoding
 {
-    return [[_RTComponentsProperty alloc] initWithName: name typeEncoding: typeEncoding];
+    return [[_RTComponentsProperty alloc] initWithName: name typeEncoding: typeEncoding ivarName:nil];
 }
 
 - (NSString *)description
 {
-    return [NSString stringWithFormat: @"<%@ %p: %@ %@>", [self class], self, [self name], [self typeEncoding]];
+    return [NSString stringWithFormat: @"<%@ %p: %@ %@ %@>", [self class], self, [self name], [self typeEncoding], [self ivarName]];
 }
 
 - (BOOL)isEqual: (id)other
 {
     return [other isKindOfClass: [RTProperty class]] &&
            [[self name] isEqual: [other name]] &&
-           [[self typeEncoding] isEqual: [other typeEncoding]];
+           [[self typeEncoding] isEqual: [other typeEncoding]] &&
+           ([self ivarName] ? [[self ivarName] isEqual: [other ivarName]] : ![other ivarName]);
 }
 
 - (NSUInteger)hash
@@ -124,6 +151,12 @@
 }
 
 - (NSString *)typeEncoding
+{
+    [self doesNotRecognizeSelector: _cmd];
+    return nil;
+}
+
+- (NSString *)ivarName
 {
     [self doesNotRecognizeSelector: _cmd];
     return nil;
