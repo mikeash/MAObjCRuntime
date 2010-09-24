@@ -25,7 +25,11 @@
 
 - (NSString *)typeEncoding
 {
-    return [NSString stringWithUTF8String: property_getTypeEncoding(_property)];
+    NSString *attributes = [NSString stringWithUTF8String: property_getAttributes(_property)];
+    NSRange range = [attributes rangeOfString:@","];
+    range.length = range.location - 1;
+    range.location = 1;
+    return [attributes substringWithRange:range];
 }
 
 @end
