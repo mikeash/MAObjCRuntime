@@ -3,15 +3,15 @@
 #import <objc/runtime.h>
 
 
-@interface RTIvar : NSObject
+@interface RTProperty : NSObject
 {
 }
 
-+ (id)ivarWithObjCIvar: (Ivar)ivar;
-+ (id)ivarWithName: (NSString *)name typeEncoding: (NSString *)typeEncoding;
-+ (id)ivarWithName: (NSString *)name encode: (const char *)encodeStr;
++ (id)propertyWithObjCProperty: (Property)property;
++ (id)propertyWithName: (NSString *)name typeEncoding: (NSString *)typeEncoding;
++ (id)propertyWithName: (NSString *)name encode: (const char *)encodeStr;
 
-- (id)initWithObjCIvar: (Ivar)ivar;
+- (id)initWithObjCProperty: (Property)property;
 - (id)initWithName: (NSString *)name typeEncoding: (NSString *)typeEncoding;
 
 - (NSString *)name;

@@ -1,48 +1,48 @@
 
-#import "RTIvar.h"
+#import "RTProperty.h"
 
 
-@interface _RTObjCIvar : RTIvar
+@interface _RTObjCProperty : RTProperty
 {
-    Ivar _ivar;
+    Property _property;
 }
 @end
 
-@implementation _RTObjCIvar
+@implementation _RTObjCProperty
 
-- (id)initWithObjCIvar: (Ivar)ivar
+- (id)initWithObjCProperty: (Property)property
 {
     if((self = [self init]))
     {
-        _ivar = ivar;
+        _property = property;
     }
     return self;
 }
 - (NSString *)name
 {
-    return [NSString stringWithUTF8String: ivar_getName(_ivar)];
+    return [NSString stringWithUTF8String: property_getName(_property)];
 }
 
 - (NSString *)typeEncoding
 {
-    return [NSString stringWithUTF8String: ivar_getTypeEncoding(_ivar)];
+    return [NSString stringWithUTF8String: property_getTypeEncoding(_property)];
 }
 
 - (ptrdiff_t)offset
 {
-    return ivar_getOffset(_ivar);
+    return property_getOffset(_property);
 }
 
 @end
 
-@interface _RTComponentsIvar : RTIvar
+@interface _RTComponentsProperty : RTProperty
 {
     NSString *_name;
     NSString *_typeEncoding;
 }
 @end
 
-@implementation _RTComponentsIvar
+@implementation _RTComponentsProperty
 
 - (id)initWithName: (NSString *)name typeEncoding: (NSString *)typeEncoding
 {
@@ -78,32 +78,32 @@
 
 @end
 
-@implementation RTIvar
+@implementation RTProperty
 
-+ (id)ivarWithObjCIvar: (Ivar)ivar
++ (id)propertyWithObjCProperty: (Property)property
 {
-    return [[[self alloc] initWithObjCIvar: ivar] autorelease];
+    return [[[self alloc] initWithObjCProperty: property] autorelease];
 }
 
-+ (id)ivarWithName: (NSString *)name typeEncoding: (NSString *)typeEncoding
++ (id)propertyWithName: (NSString *)name typeEncoding: (NSString *)typeEncoding
 {
     return [[[self alloc] initWithName: name typeEncoding: typeEncoding] autorelease];
 }
 
-+ (id)ivarWithName: (NSString *)name encode: (const char *)encodeStr
++ (id)propertyWithName: (NSString *)name encode: (const char *)encodeStr
 {
-    return [self ivarWithName: name typeEncoding: [NSString stringWithUTF8String: encodeStr]];
+    return [self propertyWithName: name typeEncoding: [NSString stringWithUTF8String: encodeStr]];
 }
 
-- (id)initWithObjCIvar: (Ivar)ivar
+- (id)initWithObjCProperty: (Property)property
 {
     [self release];
-    return [[_RTObjCIvar alloc] initWithObjCIvar: ivar];
+    return [[_RTObjCProperty alloc] initWithObjCProperty: property];
 }
 
 - (id)initWithName: (NSString *)name typeEncoding: (NSString *)typeEncoding
 {
-    return [[_RTComponentsIvar alloc] initWithName: name typeEncoding: typeEncoding];
+    return [[_RTComponentsProperty alloc] initWithName: name typeEncoding: typeEncoding];
 }
 
 - (NSString *)description
@@ -113,7 +113,7 @@
 
 - (BOOL)isEqual: (id)other
 {
-    return [other isKindOfClass: [RTIvar class]] &&
+    return [other isKindOfClass: [RTProperty class]] &&
            [[self name] isEqual: [other name]] &&
            [[self typeEncoding] isEqual: [other typeEncoding]];
 }
