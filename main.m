@@ -1,4 +1,4 @@
-// gcc -framework Foundation --std=c99 main.m MARTNSObject.m RTMethod.m RTIvar.m RTUnregisteredClass.m
+// gcc -framework Foundation --std=c99 main.m MARTNSObject.m RTMethod.m RTIvar.m RTProperty.m RTUnregisteredClass.m
 
 #import "MARTNSObject.h"
 #import "RTIvar.h"
