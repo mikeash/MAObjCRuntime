@@ -4,13 +4,13 @@
 
 @interface _RTObjCProperty : RTProperty
 {
-    Property _property;
+    objc_property_t _property;
 }
 @end
 
 @implementation _RTObjCProperty
 
-- (id)initWithObjCProperty: (Property)property
+- (id)initWithObjCProperty: (objc_property_t)property
 {
     if((self = [self init]))
     {
@@ -80,7 +80,7 @@
 
 @implementation RTProperty
 
-+ (id)propertyWithObjCProperty: (Property)property
++ (id)propertyWithObjCProperty: (objc_property_t)property
 {
     return [[[self alloc] initWithObjCProperty: property] autorelease];
 }
@@ -95,7 +95,7 @@
     return [self propertyWithName: name typeEncoding: [NSString stringWithUTF8String: encodeStr]];
 }
 
-- (id)initWithObjCProperty: (Property)property
+- (id)initWithObjCProperty: (objc_property_t)property
 {
     [self release];
     return [[_RTObjCProperty alloc] initWithObjCProperty: property];
