@@ -2,6 +2,7 @@
 #import <Foundation/Foundation.h>
 
 
+@class RTProtocol;
 @class RTIvar;
 @class RTMethod;
 
@@ -14,6 +15,7 @@
 
 - (id)initWithClass: (Class)c;
 
+- (void)addProtocol: (RTProtocol *)protocol;
 - (void)addIvar: (RTIvar *)ivar;
 - (void)addMethod: (RTMethod *)method;
 

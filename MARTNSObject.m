@@ -3,6 +3,7 @@
 
 #import <objc/runtime.h>
 
+#import "RTProtocol.h"
 #import "RTIvar.h"
 #import "RTProperty.h"
 #import "RTMethod.h"
@@ -78,6 +79,19 @@
 + (size_t)rt_instanceSize
 {
     return class_getInstanceSize(self);
+}
+
++ (NSArray *)rt_protocols
+{
+    unsigned int count;
+    Protocol **protocols = class_copyProtocolList(self, &count);
+    
+    NSMutableArray *array = [NSMutableArray array];
+    for(unsigned i = 0; i < count; i++)
+        [array addObject: [RTProtocol protocolWithObjCProtocol: protocols[i]]];
+    
+    free(protocols);
+    return array;
 }
 
 + (NSArray *)rt_methods
