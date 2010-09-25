@@ -5,6 +5,7 @@
 @interface _RTObjCProperty : RTProperty
 {
     objc_property_t _property;
+    NSArray *_attributes;
 }
 @end
 
@@ -15,9 +16,17 @@
     if((self = [self init]))
     {
         _property = property;
+        _attributes = [[[NSString stringWithUTF8String: property_getAttributes(property)] componentsSeparatedByString: @","] copy];
     }
     return self;
 }
+
+- (void)dealloc
+{
+    [_attributes release];
+    [super dealloc];
+}
+
 - (NSString *)name
 {
     return [NSString stringWithUTF8String: property_getName(_property)];
@@ -25,29 +34,27 @@
 
 - (NSString *)attributeEncodings
 {
-    NSString *attributes = [NSString stringWithUTF8String: property_getAttributes(_property)];
-    NSRange range = [attributes rangeOfString:@","];
-    NSUInteger loc = range.location + range.length;
-    range = [attributes rangeOfString:@",V"];
-    NSUInteger len = range.location - loc;
-    return [attributes substringWithRange:NSMakeRange(loc, len)];
+    NSPredicate *filter = [NSPredicate predicateWithFormat: @"NOT (self BEGINSWITH 'T') AND NOT (self BEGINSWITH 'V')"];
+    return [[_attributes filteredArrayUsingPredicate: filter] componentsJoinedByString: @","];
+}
+
+- (NSString *)contentOfAttribute: (NSString *)code
+{
+    for(NSString *encoded in _attributes)
+        if([encoded hasPrefix: code]) return [encoded substringFromIndex: 1];
+    return nil;
+}
+
 }
 
 - (NSString *)typeEncoding
 {
-    NSString *attributes = [NSString stringWithUTF8String: property_getAttributes(_property)];
-    NSRange range = [attributes rangeOfString:@","];
-    range.length = range.location - 1;
-    range.location = 1;
-    return [attributes substringWithRange:range];
+    return [self contentOfAttribute: @"T"];
 }
 
 - (NSString *)ivarName
 {
-    NSString *attributes = [NSString stringWithUTF8String: property_getAttributes(_property)];
-    NSRange range = [attributes rangeOfString:@",V"];
-    if(range.location == NSNotFound) return nil;
-    return [attributes substringFromIndex:(range.location + range.length)];
+    return [self contentOfAttribute: @"V"];
 }
 
 @end
