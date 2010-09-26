@@ -60,6 +60,11 @@
     return [self contentOfAttribute: @"T"];
 }
 
+- (NSString *)oldTypeEncoding
+{
+    return [self contentOfAttribute: @"t"];
+}
+
 - (NSString *)ivarName
 {
     return [self contentOfAttribute: @"V"];
@@ -124,6 +129,12 @@
 }
 
 - (NSString *)typeEncoding
+{
+    [self doesNotRecognizeSelector: _cmd];
+    return nil;
+}
+
+- (NSString *)oldTypeEncoding
 {
     [self doesNotRecognizeSelector: _cmd];
     return nil;

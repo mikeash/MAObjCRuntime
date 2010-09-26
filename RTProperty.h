@@ -16,6 +16,7 @@
 - (SEL)customSetter;
 - (NSString *)name;
 - (NSString *)typeEncoding;
+- (NSString *)oldTypeEncoding;
 - (NSString *)ivarName;
 
 @end
