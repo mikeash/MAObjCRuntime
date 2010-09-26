@@ -3,6 +3,7 @@
 
 #import <objc/runtime.h>
 
+#import "MARuntime.h"
 #import "RTProtocol.h"
 #import "RTIvar.h"
 #import "RTProperty.h"
@@ -14,26 +15,14 @@
 
 + (NSArray *)rt_subclasses
 {
-    Class *buffer = NULL;
-    
-    int count, size;
-    do
-    {
-        count = objc_getClassList(NULL, 0);
-        buffer = realloc(buffer, count * sizeof(*buffer));
-        size = objc_getClassList(buffer, count);
-    } while(size != count);
-    
     NSMutableArray *array = [NSMutableArray array];
-    for(int i = 0; i < count; i++)
+    for(Class candidate in [MARuntime classes])
     {
-        Class candidate = buffer[i];
         if(class_getSuperclass(candidate) == self)
         {
             [array addObject: candidate];
         }
     }
-    free(buffer);
     return array;
 }
 
