@@ -3,6 +3,14 @@
 #import <objc/runtime.h>
 
 
+typedef enum
+{
+    RTPropertySetterSemanticsAssign,
+    RTPropertySetterSemanticsRetain,
+    RTPropertySetterSemanticsCopy
+}
+RTPropertySetterSemantics;
+
 @interface RTProperty : NSObject
 {
 }
@@ -12,6 +20,12 @@
 - (id)initWithObjCProperty: (objc_property_t)property;
 
 - (NSString *)attributeEncodings;
+- (BOOL)isReadOnly;
+- (RTPropertySetterSemantics)setterSemantics;
+- (BOOL)isNonAtomic;
+- (BOOL)isDynamic;
+- (BOOL)isWeakReference;
+- (BOOL)isEligibleForGarbageCollection;
 - (SEL)customGetter;
 - (SEL)customSetter;
 - (NSString *)name;

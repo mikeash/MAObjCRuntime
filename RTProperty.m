@@ -38,6 +38,45 @@
     return [[_attributes filteredArrayUsingPredicate: filter] componentsJoinedByString: @","];
 }
 
+- (BOOL)hasAttribute: (NSString *)code
+{
+    for(NSString *encoded in _attributes)
+        if([encoded hasPrefix: code]) return YES;
+    return NO;
+}
+
+- (BOOL)isReadOnly
+{
+    return [self hasAttribute: @"R"];
+}
+
+- (RTPropertySetterSemantics)setterSemantics
+{
+    if([self hasAttribute: @"C"]) return RTPropertySetterSemanticsCopy;
+    if([self hasAttribute: @"&"]) return RTPropertySetterSemanticsRetain;
+    return RTPropertySetterSemanticsAssign;
+}
+
+- (BOOL)isNonAtomic
+{
+    return [self hasAttribute: @"N"];
+}
+
+- (BOOL)isDynamic
+{
+    return [self hasAttribute: @"D"];
+}
+
+- (BOOL)isWeakReference
+{
+    return [self hasAttribute: @"W"];
+}
+
+- (BOOL)isEligibleForGarbageCollection
+{
+    return [self hasAttribute: @"P"];
+}
+
 - (NSString *)contentOfAttribute: (NSString *)code
 {
     for(NSString *encoded in _attributes)
@@ -114,6 +153,41 @@
 {
     [self doesNotRecognizeSelector: _cmd];
     return nil;
+}
+
+- (BOOL)isReadOnly
+{
+    [self doesNotRecognizeSelector: _cmd];
+    return NO;
+}
+- (RTPropertySetterSemantics)setterSemantics
+{
+    [self doesNotRecognizeSelector: _cmd];
+    return RTPropertySetterSemanticsAssign;
+}
+
+- (BOOL)isNonAtomic
+{
+    [self doesNotRecognizeSelector: _cmd];
+    return NO;
+}
+
+- (BOOL)isDynamic
+{
+    [self doesNotRecognizeSelector: _cmd];
+    return NO;
+}
+
+- (BOOL)isWeakReference
+{
+    [self doesNotRecognizeSelector: _cmd];
+    return NO;
+}
+
+- (BOOL)isEligibleForGarbageCollection
+{
+    [self doesNotRecognizeSelector: _cmd];
+    return NO;
 }
 
 - (SEL)customGetter
