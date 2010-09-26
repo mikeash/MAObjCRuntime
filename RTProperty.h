@@ -12,6 +12,8 @@
 - (id)initWithObjCProperty: (objc_property_t)property;
 
 - (NSString *)attributeEncodings;
+- (SEL)customGetter;
+- (SEL)customSetter;
 - (NSString *)name;
 - (NSString *)typeEncoding;
 - (NSString *)ivarName;
