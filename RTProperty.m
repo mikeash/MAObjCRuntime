@@ -45,6 +45,14 @@
     return nil;
 }
 
+- (SEL)customGetter
+{
+    return NSSelectorFromString([self contentOfAttribute: @"G"]);
+}
+
+- (SEL)customSetter
+{
+    return NSSelectorFromString([self contentOfAttribute: @"G"]);
 }
 
 - (NSString *)typeEncoding
@@ -101,6 +109,18 @@
 {
     [self doesNotRecognizeSelector: _cmd];
     return nil;
+}
+
+- (SEL)customGetter
+{
+    [self doesNotRecognizeSelector: _cmd];
+    return (SEL)0;
+}
+
+- (SEL)customSetter
+{
+    [self doesNotRecognizeSelector: _cmd];
+    return (SEL)0;
 }
 
 - (NSString *)typeEncoding

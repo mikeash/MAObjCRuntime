@@ -211,7 +211,7 @@ static void TestPropertyQuery(void)
     
     RTProperty *property = [SampleClass rt_propertyForName: @"someProperty"];
     TEST_ASSERT([[property name] isEqual: @"someProperty"]);
-    TEST_ASSERT([[property attributeEncodings] isEqual: @"GcustomGetter"]);
+    TEST_ASSERT([property customGetter] == @selector(customGetter));
     TEST_ASSERT([[property typeEncoding] isEqual: [NSString stringWithUTF8String: @encode(id)]]);
     TEST_ASSERT([[property ivarName] isEqual: @"someIvar"]);
 }
