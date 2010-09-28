@@ -28,15 +28,9 @@
     for(int i = 0; i < count; i++)
     {
         Class candidate = buffer[i];
-        Class superclass = candidate;
-        while(superclass)
+        if(class_getSuperclass(candidate) == self)
         {
-            if(superclass == self)
-            {
-                [array addObject: candidate];
-                break;
-            }
-            superclass = class_getSuperclass(superclass);
+            [array addObject: candidate];
         }
     }
     free(buffer);

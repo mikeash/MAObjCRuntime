@@ -10,7 +10,7 @@
 
 @interface NSObject (MARuntime)
 
-// includes the receiver
+// does not include the receiver
 + (NSArray *)rt_subclasses;
 
 + (RTUnregisteredClass *)rt_createUnregisteredSubclassNamed: (NSString *)name;

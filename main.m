@@ -43,10 +43,10 @@ static void TestSubclasses(void)
     TEST_ASSERT([subs containsObject: [NSString class]]);
     TEST_ASSERT([subs containsObject: [NSArray class]]);
     TEST_ASSERT([subs containsObject: [NSSet class]]);
-    TEST_ASSERT([subs containsObject: [NSObject class]]);
+    TEST_ASSERT(![subs containsObject: [NSObject class]]);
     
     subs = [NSString rt_subclasses];
-    TEST_ASSERT([subs containsObject: [NSString class]]);
+    TEST_ASSERT(![subs containsObject: [NSString class]]);
     TEST_ASSERT(![subs containsObject: [NSObject class]]);
 }
 
