@@ -45,8 +45,7 @@
 
 + (RTUnregisteredClass *)rt_createUnregisteredSubclassNamed: (NSString *)name
 {
-    Class c = objc_allocateClassPair(self, [name UTF8String], 0);
-    return [RTUnregisteredClass unregisteredClassWithClass: c];
+    return [RTUnregisteredClass unregisteredClassWithName: name withSuperclass: self];
 }
 
 + (Class)rt_createSubclassNamed: (NSString *)name

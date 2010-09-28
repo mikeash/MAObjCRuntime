@@ -11,9 +11,11 @@
     Class _class;
 }
 
-+ (id)unregisteredClassWithClass: (Class)c;
++ (id)unregisteredClassWithName: (NSString *)name withSuperclass: (Class)superclass;
++ (id)unregisteredClassWithName: (NSString *)name;
 
-- (id)initWithClass: (Class)c;
+- (id)initWithName: (NSString *)name withSuperclass: (Class)superclass;
+- (id)initWithName: (NSString *)name;
 
 - (void)addProtocol: (RTProtocol *)protocol;
 - (void)addIvar: (RTIvar *)ivar;

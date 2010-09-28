@@ -8,18 +8,28 @@
 
 @implementation RTUnregisteredClass
 
-+ (id)unregisteredClassWithClass: (Class)c
++ (id)unregisteredClassWithName: (NSString *)name withSuperclass: (Class)superclass
 {
-    return [[[self alloc] initWithClass: c] autorelease];
+    return [[[self alloc] initWithName: name withSuperclass: superclass] autorelease];
 }
 
-- (id)initWithClass: (Class)c
++ (id)unregisteredClassWithName: (NSString *)name
+{
+    return [self unregisteredClassWithName: name withSuperclass: Nil];
+}
+
+- (id)initWithName: (NSString *)name withSuperclass: (Class)superclass
 {
     if((self = [self init]))
     {
-        _class = c;
+        _class = objc_allocateClassPair(superclass, [name UTF8String], 0);
     }
     return self;
+}
+
+- (id)initWithName: (NSString *)name
+{
+    return [self initWithName: name withSuperclass: Nil];
 }
 
 - (void)addProtocol: (RTProtocol *)protocol
