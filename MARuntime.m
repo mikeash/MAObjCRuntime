@@ -1,6 +1,8 @@
 
 #import "MARuntime.h"
 
+#import "RTClass.h"
+#import "RTProtocol.h"
 
 @implementation MARuntime
 
@@ -19,7 +21,8 @@
     NSMutableArray *array = [NSMutableArray array];
     for(int i = 0; i < count; i++)
     {
-        [array addObject: buffer[i]];
+        RTClass *candidate = [RTClass classWithObjCClass: buffer[i]];
+        [array addObject: candidate];
     }
     free(buffer);
     return array;
@@ -39,9 +42,31 @@
     return array;
 }
 
-+ (Class)classNamed: (NSString *)name
++ (RTClass *)classNamed: (NSString *)name
 {
-    return objc_getClass([name cStringUsingEncoding:[NSString defaultCStringEncoding]]);
+    Class class = objc_getClass([name cStringUsingEncoding:[NSString defaultCStringEncoding]]);
+    return [RTClass classWithObjCClass: class];
+}
+
+- (NSArray *)protocols
+{
+    unsigned int count;
+    Protocol **protocols = objc_copyProtocolList(&count);
+    
+    NSMutableArray *array = [NSMutableArray array];
+    for(unsigned i = 0; i < count; i++)
+        [array addObject: [RTProtocol protocolWithObjCProtocol: protocols[i]]];
+    
+    free(protocols);
+    return array;
+}
+
++ (RTProtocol *)protocolNamed: (NSString *)name
+{
+    Protocol *protocol = objc_getProtocol([name cStringUsingEncoding:[NSString defaultCStringEncoding]]);
+    if(!protocol) return nil;
+    
+    return [RTProtocol protocolWithObjCProtocol: protocol];
 }
 
 @end

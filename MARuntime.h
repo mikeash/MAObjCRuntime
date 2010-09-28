@@ -3,12 +3,18 @@
 #import <objc/runtime.h>
 
 
+@class RTClass;
+@class RTProtocol;
+
 @interface MARuntime : NSObject
 {
 }
 
 + (NSArray *)classes;
 + (NSArray *)rootClasses;
-+ (Class)classNamed: (NSString *)name;
++ (RTClass *)classNamed: (NSString *)name;
+- (NSArray *)protocols;
++ (RTProtocol *)protocolNamed: (NSString *)name;
+
 
 @end

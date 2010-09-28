@@ -2,6 +2,7 @@
 #import <Foundation/Foundation.h>
 
 
+@class RTClass;
 @class RTProtocol;
 @class RTIvar;
 @class RTProperty;
@@ -14,19 +15,20 @@
 + (NSArray *)rt_subclasses;
 
 + (RTUnregisteredClass *)rt_createUnregisteredSubclassNamed: (NSString *)name;
-+ (Class)rt_createSubclassNamed: (NSString *)name;
-+ (void)rt_destroyClass;
++ (RTClass *)rt_createSubclassNamed: (NSString *)name;
 
 + (BOOL)rt_isMetaClass;
-+ (Class)rt_setSuperclass: (Class)newSuperclass;
++ (RTClass *)rt_setSuperclass: (RTClass *)newSuperclass;
 + (size_t)rt_instanceSize;
 
 + (NSArray *)rt_protocols;
 
-+ (NSArray *)rt_methods;
-+ (RTMethod *)rt_methodForSelector: (SEL)sel;
-
-+ (void)rt_addMethod: (RTMethod *)method;
++ (NSArray *)rt_classMethods;
++ (NSArray *)rt_instanceMethods;
++ (RTMethod *)rt_classMethodForSelector: (SEL)sel;
++ (RTMethod *)rt_instanceMethodForSelector: (SEL)sel;
++ (void)rt_addClassMethod: (RTMethod *)method;
++ (void)rt_addInstanceMethod: (RTMethod *)method;
 
 + (NSArray *)rt_ivars;
 + (RTIvar *)rt_ivarForName: (NSString *)name;

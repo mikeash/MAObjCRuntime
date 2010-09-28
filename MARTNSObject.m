@@ -3,7 +3,7 @@
 
 #import <objc/runtime.h>
 
-#import "MARuntime.h"
+#import "RTClass.h"
 #import "RTProtocol.h"
 #import "RTIvar.h"
 #import "RTProperty.h"
@@ -15,30 +15,17 @@
 
 + (NSArray *)rt_subclasses
 {
-    NSMutableArray *array = [NSMutableArray array];
-    for(Class candidate in [MARuntime classes])
-    {
-        if(class_getSuperclass(candidate) == self)
-        {
-            [array addObject: candidate];
-        }
-    }
-    return array;
+    return [[RTClass classWithObjCClass: self] subclasses];
 }
 
 + (RTUnregisteredClass *)rt_createUnregisteredSubclassNamed: (NSString *)name
 {
-    return [RTUnregisteredClass unregisteredClassWithName: name withSuperclass: self];
+    return [RTUnregisteredClass unregisteredClassWithName: name withSuperclass: [RTClass classWithObjCClass: self]];
 }
 
-+ (Class)rt_createSubclassNamed: (NSString *)name
++ (RTClass *)rt_createSubclassNamed: (NSString *)name
 {
     return [[self rt_createUnregisteredSubclassNamed: name] registerClass];
-}
-
-+ (void)rt_destroyClass
-{
-    objc_disposeClassPair(self);
 }
 
 + (BOOL)rt_isMetaClass
@@ -46,100 +33,69 @@
     return class_isMetaClass(self);
 }
 
-#ifdef __clang__
-#pragma clang diagnostic push
-#endif
-#pragma GCC diagnostic ignored "-Wdeprecated-declarations"
-+ (Class)rt_setSuperclass: (Class)newSuperclass
++ (RTClass *)rt_setSuperclass: (RTClass *)newSuperclass
 {
-    return class_setSuperclass(self, newSuperclass);
+    return [[RTClass classWithObjCClass: self] setSuperclass: newSuperclass];
 }
-#ifdef __clang__
-#pragma clang diagnostic pop
-#endif
 
 + (size_t)rt_instanceSize
 {
-    return class_getInstanceSize(self);
+    return [[RTClass classWithObjCClass: self] instanceSize];
 }
 
 + (NSArray *)rt_protocols
 {
-    unsigned int count;
-    Protocol **protocols = class_copyProtocolList(self, &count);
-    
-    NSMutableArray *array = [NSMutableArray array];
-    for(unsigned i = 0; i < count; i++)
-        [array addObject: [RTProtocol protocolWithObjCProtocol: protocols[i]]];
-    
-    free(protocols);
-    return array;
+    return [[RTClass classWithObjCClass: self] protocols];
 }
 
-+ (NSArray *)rt_methods
++ (NSArray *)rt_classMethods
 {
-    unsigned int count;
-    Method *methods = class_copyMethodList(self, &count);
-    
-    NSMutableArray *array = [NSMutableArray array];
-    for(unsigned i = 0; i < count; i++)
-        [array addObject: [RTMethod methodWithObjCMethod: methods[i]]];
-    
-    free(methods);
-    return array;
+    return [[RTClass classWithObjCClass: self] classMethods];
 }
 
-+ (RTMethod *)rt_methodForSelector: (SEL)sel
++ (NSArray *)rt_instanceMethods
 {
-    Method m = class_getInstanceMethod(self, sel);
-    if(!m) return nil;
-    
-    return [RTMethod methodWithObjCMethod: m];
+    return [[RTClass classWithObjCClass: self] instanceMethods];
 }
 
-+ (void)rt_addMethod: (RTMethod *)method
++ (RTMethod *)rt_classMethodForSelector: (SEL)sel
 {
-    class_addMethod(self, [method selector], [method implementation], [[method signature] UTF8String]);
+    return [[RTClass classWithObjCClass: self] classMethodForSelector: sel];
+}
+
++ (RTMethod *)rt_instanceMethodForSelector: (SEL)sel
+{
+    return [[RTClass classWithObjCClass: self] instanceMethodForSelector: sel];
+}
+
++ (void)rt_addClassMethod: (RTMethod *)method
+{
+    [[RTClass classWithObjCClass: self] addClassMethod: method];
+}
+
++ (void)rt_addInstanceMethod: (RTMethod *)method
+{
+    [[RTClass classWithObjCClass: self] addInstanceMethod: method];
 }
 
 + (NSArray *)rt_ivars
 {
-    unsigned int count;
-    Ivar *list = class_copyIvarList(self, &count);
-    
-    NSMutableArray *array = [NSMutableArray array];
-    for(unsigned i = 0; i < count; i++)
-        [array addObject: [RTIvar ivarWithObjCIvar: list[i]]];
-    
-    free(list);
-    return array;
+    return [[RTClass classWithObjCClass: self] instanceVariables];
 }
 
 + (RTIvar *)rt_ivarForName: (NSString *)name
 {
-    Ivar ivar = class_getInstanceVariable(self, [name UTF8String]);
-    if(!ivar) return nil;
-    return [RTIvar ivarWithObjCIvar: ivar];
+    return [[RTClass classWithObjCClass: self] instanceVariableNamed: name];
 }
 
 + (NSArray *)rt_properties
 {
-    unsigned int count;
-    objc_property_t *list = class_copyPropertyList(self, &count);
-    
-    NSMutableArray *array = [NSMutableArray array];
-    for(unsigned i = 0; i < count; i++)
-        [array addObject: [RTProperty propertyWithObjCProperty: list[i]]];
-    
-    free(list);
-    return array;
+    return [(RTClass *)[RTClass classWithObjCClass: self] properties];
 }
 
 + (RTProperty *)rt_propertyForName: (NSString *)name
 {
-    objc_property_t property = class_getProperty(self, [name UTF8String]);
-    if(!property) return nil;
-    return [RTProperty propertyWithObjCProperty: property];
+    return [[RTClass classWithObjCClass: self] propertyNamed: name];
 }
 
 - (Class)rt_class
