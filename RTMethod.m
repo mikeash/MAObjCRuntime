@@ -255,7 +255,22 @@
 
 - (id)rt_sendSelector: (SEL)sel, ...
 {
-    RTMethod *method = [[self rt_class] rt_methodForSelector: sel];
+    RTMethod *method = [[self class] rt_instanceMethodForSelector: sel];
+    NSParameterAssert([[method signature] hasPrefix: [NSString stringWithUTF8String: @encode(id)]]);
+    
+    id retVal;
+    
+    va_list args;
+    va_start(args, sel);
+    [method _returnValue: &retVal sendToTarget: self arguments: args];
+    va_end(args);
+    
+    return retVal;
+}
+
++ (id)rt_sendSelector: (SEL)sel, ...
+{
+    RTMethod *method = [[self class] rt_classMethodForSelector: sel];
     NSParameterAssert([[method signature] hasPrefix: [NSString stringWithUTF8String: @encode(id)]]);
     
     id retVal;
@@ -270,7 +285,16 @@
 
 - (void)rt_returnValue: (void *)retPtr sendSelector: (SEL)sel, ...
 {
-    RTMethod *method = [[self rt_class] rt_methodForSelector: sel];
+    RTMethod *method = [[self class] rt_instanceMethodForSelector: sel];
+    va_list args;
+    va_start(args, sel);
+    [method _returnValue: retPtr sendToTarget: self arguments: args];
+    va_end(args);
+}
+
++ (void)rt_returnValue: (void *)retPtr sendSelector: (SEL)sel, ...
+{
+    RTMethod *method = [[self class] rt_classMethodForSelector: sel];
     va_list args;
     va_start(args, sel);
     [method _returnValue: retPtr sendToTarget: self arguments: args];

@@ -1,6 +1,7 @@
 
 #import "RTUnregisteredClass.h"
 
+#import "RTClass.h"
 #import "RTProtocol.h"
 #import "RTIvar.h"
 #import "RTMethod.h"
@@ -8,20 +9,25 @@
 
 @implementation RTUnregisteredClass
 
-+ (id)unregisteredClassWithName: (NSString *)name withSuperclass: (Class)superclass
++ (id)unregisteredClassWithName: (NSString *)name withSuperclass: (RTClass *)superclassOrNil
 {
-    return [[[self alloc] initWithName: name withSuperclass: superclass] autorelease];
+    return [[[self alloc] initWithName: name withSuperclass: superclassOrNil] autorelease];
 }
 
 + (id)unregisteredClassWithName: (NSString *)name
 {
-    return [self unregisteredClassWithName: name withSuperclass: Nil];
+    return [self unregisteredClassWithName: name withSuperclass: nil];
 }
 
-- (id)initWithName: (NSString *)name withSuperclass: (Class)superclass
+- (id)initWithName: (NSString *)name withSuperclass: (RTClass *)superclassOrNil
 {
     if((self = [self init]))
     {
+        Class superclass = Nil;
+        if(superclassOrNil)
+        {
+            superclass = [superclassOrNil objCClass];
+        }
         _class = objc_allocateClassPair(superclass, [name UTF8String], 0);
         if(_class == Nil)
         {
@@ -34,7 +40,7 @@
 
 - (id)initWithName: (NSString *)name
 {
-    return [self initWithName: name withSuperclass: Nil];
+    return [self initWithName: name withSuperclass: nil];
 }
 
 - (void)addProtocol: (RTProtocol *)protocol
@@ -55,10 +61,10 @@
     class_addMethod(_class, [method selector], [method implementation], [[method signature] UTF8String]);
 }
 
-- (Class)registerClass
+- (RTClass *)registerClass
 {
     objc_registerClassPair(_class);
-    return _class;
+    return [RTClass classWithObjCClass: _class];
 }
 
 @end

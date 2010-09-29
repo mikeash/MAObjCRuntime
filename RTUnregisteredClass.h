@@ -2,6 +2,7 @@
 #import <Foundation/Foundation.h>
 
 
+@class RTClass;
 @class RTProtocol;
 @class RTIvar;
 @class RTMethod;
@@ -11,16 +12,16 @@
     Class _class;
 }
 
-+ (id)unregisteredClassWithName: (NSString *)name withSuperclass: (Class)superclass;
++ (id)unregisteredClassWithName: (NSString *)name withSuperclass: (RTClass *)superclassOrNil;
 + (id)unregisteredClassWithName: (NSString *)name;
 
-- (id)initWithName: (NSString *)name withSuperclass: (Class)superclass;
+- (id)initWithName: (NSString *)name withSuperclass: (RTClass *)superclassOrNil;
 - (id)initWithName: (NSString *)name;
 
 - (void)addProtocol: (RTProtocol *)protocol;
 - (void)addIvar: (RTIvar *)ivar;
 - (void)addMethod: (RTMethod *)method;
 
-- (Class)registerClass;
+- (RTClass *)registerClass;
 
 @end
