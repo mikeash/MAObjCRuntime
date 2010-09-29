@@ -23,7 +23,11 @@
     if((self = [self init]))
     {
         _class = objc_allocateClassPair(superclass, [name UTF8String], 0);
-        if(_class == Nil) return nil;
+        if(_class == Nil)
+        {
+            [self release];
+            return nil;
+        }
     }
     return self;
 }
