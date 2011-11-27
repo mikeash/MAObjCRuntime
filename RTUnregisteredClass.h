@@ -21,7 +21,9 @@
 - (void)addProtocol: (RTProtocol *)protocol;
 - (void)addIvar: (RTIvar *)ivar;
 - (void)addMethod: (RTMethod *)method;
+#if __MAC_OS_X_VERSION_MIN_REQUIRED >= 1070
 - (void)addProperty: (RTProperty *)property;
+#endif
 
 - (Class)registerClass;
 

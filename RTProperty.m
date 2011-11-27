@@ -55,6 +55,7 @@
     return [[_attrs copy] autorelease];
 }
 
+#if __MAC_OS_X_VERSION_MIN_REQUIRED >= 1070
 - (BOOL)addToClass:(Class)classToAddTo
 {
     NSDictionary *attrs = [self attributes];
@@ -72,6 +73,7 @@
     free(cattrs);
     return result;
 }
+#endif
 
 - (NSString *)attributeEncodings
 {

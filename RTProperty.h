@@ -22,7 +22,9 @@ RTPropertySetterSemantics;
 - (id)initWithName: (NSString *)name attributes:(NSDictionary *)attributes;
 
 - (NSDictionary *)attributes;
+#if __MAC_OS_X_VERSION_MIN_REQUIRED >= 1070
 - (BOOL)addToClass:(Class)classToAddTo;
+#endif
 
 - (NSString *)attributeEncodings;
 - (BOOL)isReadOnly;

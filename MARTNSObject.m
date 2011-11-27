@@ -159,10 +159,12 @@
     return [RTProperty propertyWithObjCProperty: property];
 }
 
+#if __MAC_OS_X_VERSION_MIN_REQUIRED >= 1070
 + (BOOL)rt_addProperty: (RTProperty *)property
 {
     return [property addToClass:self];
 }
+#endif
 
 - (Class)rt_class
 {
