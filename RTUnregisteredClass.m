@@ -4,6 +4,7 @@
 #import "RTProtocol.h"
 #import "RTIvar.h"
 #import "RTMethod.h"
+#import "RTProperty.h"
 
 
 @implementation RTUnregisteredClass
@@ -54,6 +55,13 @@
 {
     class_addMethod(_class, [method selector], [method implementation], [[method signature] UTF8String]);
 }
+
+#if __MAC_OS_X_VERSION_MIN_REQUIRED >= 1070
+- (void)addProperty: (RTProperty *)property
+{
+    [property addToClass:_class];
+}
+#endif
 
 - (Class)registerClass
 {

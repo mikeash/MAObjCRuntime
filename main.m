@@ -216,6 +216,34 @@ static void TestPropertyQuery(void)
     TEST_ASSERT([[property ivarName] isEqual: @"someIvar"]);
 }
 
+#if __MAC_OS_X_VERSION_MIN_REQUIRED >= 1070
+static void TestAddProperty(void)
+{
+    RTUnregisteredClass *unreg = [NSObject rt_createUnregisteredSubclassNamed: @"TestAddPropertyClass"];
+    RTIvar *ivar = [RTIvar ivarWithName: @"assignedIvar" encode: @encode(id)];
+    [unreg addIvar:ivar];
+    Class c = [unreg registerClass];
+    
+    RTProperty *assignedObjectProp = [RTProperty propertyWithName:@"assignedObjectProp"
+                                                       attributes:[NSDictionary dictionaryWithObjectsAndKeys:
+                                                                   [ivar typeEncoding], RTPropertyTypeEncodingAttribute,
+                                                                   [ivar name], RTPropertyBackingIVarNameAttribute,
+                                                                   nil]];
+    [c rt_addProperty:assignedObjectProp];
+    
+    {{
+        NSArray *properties = [c rt_properties];
+        TEST_ASSERT([[properties valueForKey: @"name"] containsObject: @"assignedObjectProp"]);
+        
+        RTProperty *property = [c rt_propertyForName: @"assignedObjectProp"];
+        TEST_ASSERT([[property name] isEqual: @"assignedObjectProp"]);
+        TEST_ASSERT([[property typeEncoding] isEqual: [NSString stringWithUTF8String: @encode(id)]]);
+        TEST_ASSERT([[property ivarName] isEqual: @"assignedIvar"]);
+        TEST_ASSERT([property setterSemantics] == RTPropertySetterSemanticsAssign);
+    }}
+}
+#endif
+
 static void TestIvarAdd(void)
 {
     RTUnregisteredClass *unreg = [NSObject rt_createUnregisteredSubclassNamed: @"IvarAddTester"];
@@ -313,6 +341,9 @@ int main(int argc, char **argv)
             TEST(TestProtocolQuery);
             TEST(TestIvarQuery);
             TEST(TestPropertyQuery);
+#if __MAC_OS_X_VERSION_MIN_REQUIRED >= 1070
+            TEST(TestAddProperty);
+#endif
             TEST(TestIvarAdd);
             TEST(TestEquality);
             TEST(TestMessageSending);

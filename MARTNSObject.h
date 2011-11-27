@@ -33,6 +33,9 @@
 
 + (NSArray *)rt_properties;
 + (RTProperty *)rt_propertyForName: (NSString *)name;
+#if __MAC_OS_X_VERSION_MIN_REQUIRED >= 1070
++ (BOOL)rt_addProperty: (RTProperty *)property;
+#endif
 
 // Apple likes to fiddle with -class to hide their dynamic subclasses
 // e.g. KVO subclasses, so [obj class] can lie to you
