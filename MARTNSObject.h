@@ -33,6 +33,7 @@
 
 + (NSArray *)rt_properties;
 + (RTProperty *)rt_propertyForName: (NSString *)name;
++ (BOOL)rt_addProperty: (RTProperty *)property;
 
 // Apple likes to fiddle with -class to hide their dynamic subclasses
 // e.g. KVO subclasses, so [obj class] can lie to you

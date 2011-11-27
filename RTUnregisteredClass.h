@@ -5,6 +5,7 @@
 @class RTProtocol;
 @class RTIvar;
 @class RTMethod;
+@class RTProperty;
 
 @interface RTUnregisteredClass : NSObject
 {
@@ -20,6 +21,7 @@
 - (void)addProtocol: (RTProtocol *)protocol;
 - (void)addIvar: (RTIvar *)ivar;
 - (void)addMethod: (RTMethod *)method;
+- (void)addProperty: (RTProperty *)property;
 
 - (Class)registerClass;
 

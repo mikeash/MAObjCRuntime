@@ -21,6 +21,9 @@ RTPropertySetterSemantics;
 - (id)initWithObjCProperty: (objc_property_t)property;
 - (id)initWithName: (NSString *)name attributes:(NSDictionary *)attributes;
 
+- (NSDictionary *)attributes;
+- (BOOL)addToClass:(Class)classToAddTo;
+
 - (NSString *)attributeEncodings;
 - (BOOL)isReadOnly;
 - (RTPropertySetterSemantics)setterSemantics;

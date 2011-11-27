@@ -4,6 +4,7 @@
 #import "RTProtocol.h"
 #import "RTIvar.h"
 #import "RTMethod.h"
+#import "RTProperty.h"
 
 
 @implementation RTUnregisteredClass
@@ -53,6 +54,11 @@
 - (void)addMethod: (RTMethod *)method
 {
     class_addMethod(_class, [method selector], [method implementation], [[method signature] UTF8String]);
+}
+
+- (void)addProperty: (RTProperty *)property
+{
+    [property addToClass:_class];
 }
 
 - (Class)registerClass

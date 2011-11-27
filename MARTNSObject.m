@@ -159,6 +159,11 @@
     return [RTProperty propertyWithObjCProperty: property];
 }
 
++ (BOOL)rt_addProperty: (RTProperty *)property
+{
+    return [property addToClass:self];
+}
+
 - (Class)rt_class
 {
     return object_getClass(self);

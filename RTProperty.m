@@ -50,6 +50,29 @@
         return _name;
 }
 
+- (NSDictionary *)attributes
+{
+    return [[_attrs copy] autorelease];
+}
+
+- (BOOL)addToClass:(Class)classToAddTo
+{
+    NSDictionary *attrs = [self attributes];
+    objc_property_attribute_t *cattrs = (objc_property_attribute_t*)calloc([attrs count], sizeof(objc_property_attribute_t));
+    unsigned attrIdx = 0;
+    for (NSString *attrCode in attrs) {
+        cattrs[attrIdx].name = [attrCode UTF8String];
+        cattrs[attrIdx].value = [[attrs objectForKey:attrCode] UTF8String];
+        attrIdx++;
+    }
+    BOOL result = class_addProperty(classToAddTo,
+                                    [[self name] UTF8String],
+                                    cattrs,
+                                    [attrs count]);
+    free(cattrs);
+    return result;
+}
+
 - (NSString *)attributeEncodings
 {
     NSMutableArray *filteredAttributes = [NSMutableArray arrayWithCapacity:[_attrs count] - 2];
@@ -177,6 +200,18 @@
 {
     [self doesNotRecognizeSelector: _cmd];
     return nil;
+}
+
+- (NSDictionary *)attributes
+{
+    [self doesNotRecognizeSelector: _cmd];
+    return nil;
+}
+
+- (BOOL)addToClass:(Class)classToAddTo
+{
+    [self doesNotRecognizeSelector: _cmd];
+    return NO;
 }
 
 - (NSString *)attributeEncodings
