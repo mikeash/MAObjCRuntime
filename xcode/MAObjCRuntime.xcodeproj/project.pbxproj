@@ -1,0 +1,231 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 45;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		794569F41481810F006AD2EB /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 794569E71481810F006AD2EB /* main.m */; };
+		794569F51481810F006AD2EB /* MARTNSObject.m in Sources */ = {isa = PBXBuildFile; fileRef = 794569E91481810F006AD2EB /* MARTNSObject.m */; };
+		794569F61481810F006AD2EB /* RTIvar.m in Sources */ = {isa = PBXBuildFile; fileRef = 794569EB1481810F006AD2EB /* RTIvar.m */; };
+		794569F71481810F006AD2EB /* RTMethod.m in Sources */ = {isa = PBXBuildFile; fileRef = 794569ED1481810F006AD2EB /* RTMethod.m */; };
+		794569F81481810F006AD2EB /* RTProperty.m in Sources */ = {isa = PBXBuildFile; fileRef = 794569EF1481810F006AD2EB /* RTProperty.m */; };
+		794569F91481810F006AD2EB /* RTProtocol.m in Sources */ = {isa = PBXBuildFile; fileRef = 794569F11481810F006AD2EB /* RTProtocol.m */; };
+		794569FA1481810F006AD2EB /* RTUnregisteredClass.m in Sources */ = {isa = PBXBuildFile; fileRef = 794569F31481810F006AD2EB /* RTUnregisteredClass.m */; };
+		8DD76F9C0486AA7600D96B5E /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 08FB779EFE84155DC02AAC07 /* Foundation.framework */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXFileReference section */
+		08FB779EFE84155DC02AAC07 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = /System/Library/Frameworks/Foundation.framework; sourceTree = "<absolute>"; };
+		32A70AAB03705E1F00C91783 /* MAObjCRuntime_Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MAObjCRuntime_Prefix.pch; sourceTree = "<group>"; };
+		794569E71481810F006AD2EB /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = main.m; path = ../main.m; sourceTree = "<group>"; };
+		794569E81481810F006AD2EB /* MARTNSObject.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MARTNSObject.h; path = ../MARTNSObject.h; sourceTree = "<group>"; };
+		794569E91481810F006AD2EB /* MARTNSObject.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = MARTNSObject.m; path = ../MARTNSObject.m; sourceTree = "<group>"; };
+		794569EA1481810F006AD2EB /* RTIvar.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = RTIvar.h; path = ../RTIvar.h; sourceTree = "<group>"; };
+		794569EB1481810F006AD2EB /* RTIvar.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = RTIvar.m; path = ../RTIvar.m; sourceTree = "<group>"; };
+		794569EC1481810F006AD2EB /* RTMethod.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = RTMethod.h; path = ../RTMethod.h; sourceTree = "<group>"; };
+		794569ED1481810F006AD2EB /* RTMethod.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = RTMethod.m; path = ../RTMethod.m; sourceTree = "<group>"; };
+		794569EE1481810F006AD2EB /* RTProperty.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = RTProperty.h; path = ../RTProperty.h; sourceTree = "<group>"; };
+		794569EF1481810F006AD2EB /* RTProperty.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = RTProperty.m; path = ../RTProperty.m; sourceTree = "<group>"; };
+		794569F01481810F006AD2EB /* RTProtocol.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = RTProtocol.h; path = ../RTProtocol.h; sourceTree = "<group>"; };
+		794569F11481810F006AD2EB /* RTProtocol.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = RTProtocol.m; path = ../RTProtocol.m; sourceTree = "<group>"; };
+		794569F21481810F006AD2EB /* RTUnregisteredClass.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = RTUnregisteredClass.h; path = ../RTUnregisteredClass.h; sourceTree = "<group>"; };
+		794569F31481810F006AD2EB /* RTUnregisteredClass.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = RTUnregisteredClass.m; path = ../RTUnregisteredClass.m; sourceTree = "<group>"; };
+		8DD76FA10486AA7600D96B5E /* MAObjCRuntime */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = MAObjCRuntime; sourceTree = BUILT_PRODUCTS_DIR; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		8DD76F9B0486AA7600D96B5E /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				8DD76F9C0486AA7600D96B5E /* Foundation.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		08FB7794FE84155DC02AAC07 /* MAObjCRuntime */ = {
+			isa = PBXGroup;
+			children = (
+				794569E71481810F006AD2EB /* main.m */,
+				794569E81481810F006AD2EB /* MARTNSObject.h */,
+				794569E91481810F006AD2EB /* MARTNSObject.m */,
+				794569EA1481810F006AD2EB /* RTIvar.h */,
+				794569EB1481810F006AD2EB /* RTIvar.m */,
+				794569EC1481810F006AD2EB /* RTMethod.h */,
+				794569ED1481810F006AD2EB /* RTMethod.m */,
+				794569EE1481810F006AD2EB /* RTProperty.h */,
+				794569EF1481810F006AD2EB /* RTProperty.m */,
+				794569F01481810F006AD2EB /* RTProtocol.h */,
+				794569F11481810F006AD2EB /* RTProtocol.m */,
+				794569F21481810F006AD2EB /* RTUnregisteredClass.h */,
+				794569F31481810F006AD2EB /* RTUnregisteredClass.m */,
+				32A70AAB03705E1F00C91783 /* MAObjCRuntime_Prefix.pch */,
+				08FB779DFE84155DC02AAC07 /* External Frameworks and Libraries */,
+				1AB674ADFE9D54B511CA2CBB /* Products */,
+			);
+			name = MAObjCRuntime;
+			sourceTree = "<group>";
+		};
+		08FB779DFE84155DC02AAC07 /* External Frameworks and Libraries */ = {
+			isa = PBXGroup;
+			children = (
+				08FB779EFE84155DC02AAC07 /* Foundation.framework */,
+			);
+			name = "External Frameworks and Libraries";
+			sourceTree = "<group>";
+		};
+		1AB674ADFE9D54B511CA2CBB /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				8DD76FA10486AA7600D96B5E /* MAObjCRuntime */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		8DD76F960486AA7600D96B5E /* MAObjCRuntime */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 1DEB927408733DD40010E9CD /* Build configuration list for PBXNativeTarget "MAObjCRuntime" */;
+			buildPhases = (
+				8DD76F990486AA7600D96B5E /* Sources */,
+				8DD76F9B0486AA7600D96B5E /* Frameworks */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = MAObjCRuntime;
+			productInstallPath = "$(HOME)/bin";
+			productName = MAObjCRuntime;
+			productReference = 8DD76FA10486AA7600D96B5E /* MAObjCRuntime */;
+			productType = "com.apple.product-type.tool";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		08FB7793FE84155DC02AAC07 /* Project object */ = {
+			isa = PBXProject;
+			buildConfigurationList = 1DEB927808733DD40010E9CD /* Build configuration list for PBXProject "MAObjCRuntime" */;
+			compatibilityVersion = "Xcode 3.1";
+			developmentRegion = English;
+			hasScannedForEncodings = 1;
+			knownRegions = (
+				English,
+				Japanese,
+				French,
+				German,
+			);
+			mainGroup = 08FB7794FE84155DC02AAC07 /* MAObjCRuntime */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				8DD76F960486AA7600D96B5E /* MAObjCRuntime */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXSourcesBuildPhase section */
+		8DD76F990486AA7600D96B5E /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				794569F41481810F006AD2EB /* main.m in Sources */,
+				794569F51481810F006AD2EB /* MARTNSObject.m in Sources */,
+				794569F61481810F006AD2EB /* RTIvar.m in Sources */,
+				794569F71481810F006AD2EB /* RTMethod.m in Sources */,
+				794569F81481810F006AD2EB /* RTProperty.m in Sources */,
+				794569F91481810F006AD2EB /* RTProtocol.m in Sources */,
+				794569FA1481810F006AD2EB /* RTUnregisteredClass.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin XCBuildConfiguration section */
+		1DEB927508733DD40010E9CD /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				COPY_PHASE_STRIP = NO;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_ENABLE_FIX_AND_CONTINUE = YES;
+				GCC_MODEL_TUNING = G5;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = MAObjCRuntime_Prefix.pch;
+				INSTALL_PATH = /usr/local/bin;
+				PRODUCT_NAME = MAObjCRuntime;
+			};
+			name = Debug;
+		};
+		1DEB927608733DD40010E9CD /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				GCC_MODEL_TUNING = G5;
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = MAObjCRuntime_Prefix.pch;
+				INSTALL_PATH = /usr/local/bin;
+				PRODUCT_NAME = MAObjCRuntime;
+			};
+			name = Release;
+		};
+		1DEB927908733DD40010E9CD /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ARCHS = "$(ARCHS_STANDARD_32_64_BIT)";
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				PREBINDING = NO;
+				SDKROOT = macosx10.6;
+			};
+			name = Debug;
+		};
+		1DEB927A08733DD40010E9CD /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ARCHS = "$(ARCHS_STANDARD_32_64_BIT)";
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				PREBINDING = NO;
+				SDKROOT = macosx10.6;
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		1DEB927408733DD40010E9CD /* Build configuration list for PBXNativeTarget "MAObjCRuntime" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				1DEB927508733DD40010E9CD /* Debug */,
+				1DEB927608733DD40010E9CD /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		1DEB927808733DD40010E9CD /* Build configuration list for PBXProject "MAObjCRuntime" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				1DEB927908733DD40010E9CD /* Debug */,
+				1DEB927A08733DD40010E9CD /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = 08FB7793FE84155DC02AAC07 /* Project object */;
+}
