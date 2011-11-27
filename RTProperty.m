@@ -5,7 +5,8 @@
 @interface _RTObjCProperty : RTProperty
 {
     objc_property_t _property;
-    NSArray *_attributes;
+    NSMutableDictionary *_attrs;
+    NSString *_name;
 }
 @end
 
@@ -16,97 +17,115 @@
     if((self = [self init]))
     {
         _property = property;
-        _attributes = [[[NSString stringWithUTF8String: property_getAttributes(property)] componentsSeparatedByString: @","] copy];
+        NSArray *attrPairs = [[NSString stringWithUTF8String: property_getAttributes(property)] componentsSeparatedByString: @","];
+        _attrs = [[NSMutableDictionary alloc] initWithCapacity:[attrPairs count]];
+        for(NSString *attrPair in attrPairs)
+            [_attrs setObject:[attrPair substringFromIndex:1] forKey:[attrPair substringToIndex:1]];
+    }
+    return self;
+}
+
+- (id)initWithName: (NSString *)name attributes:(NSDictionary *)attributes
+{
+    if((self = [self init]))
+    {
+        _name = [name copy];
+        _attrs = [attributes copy];
     }
     return self;
 }
 
 - (void)dealloc
 {
-    [_attributes release];
+    [_attrs release];
+    [_name release];
     [super dealloc];
 }
 
 - (NSString *)name
 {
-    return [NSString stringWithUTF8String: property_getName(_property)];
+    if (_property)
+        return [NSString stringWithUTF8String: property_getName(_property)];
+    else
+        return _name;
 }
 
 - (NSString *)attributeEncodings
 {
-    NSPredicate *filter = [NSPredicate predicateWithFormat: @"NOT (self BEGINSWITH 'T') AND NOT (self BEGINSWITH 'V')"];
-    return [[_attributes filteredArrayUsingPredicate: filter] componentsJoinedByString: @","];
+    NSMutableArray *filteredAttributes = [NSMutableArray arrayWithCapacity:[_attrs count] - 2];
+    for (NSString *attrKey in _attrs)
+    {
+        if (![attrKey isEqualToString:RTPropertyTypeEncodingAttribute] && ![attrKey isEqualToString:RTPropertyBackingIVarNameAttribute])
+            [filteredAttributes addObject:[_attrs objectForKey:attrKey]];
+    }
+    return [filteredAttributes componentsJoinedByString: @","];
 }
 
 - (BOOL)hasAttribute: (NSString *)code
 {
-    for(NSString *encoded in _attributes)
-        if([encoded hasPrefix: code]) return YES;
-    return NO;
+    return [_attrs objectForKey:code] != nil;
 }
 
 - (BOOL)isReadOnly
 {
-    return [self hasAttribute: @"R"];
+    return [self hasAttribute: RTPropertyReadOnlyAttribute];
 }
 
 - (RTPropertySetterSemantics)setterSemantics
 {
-    if([self hasAttribute: @"C"]) return RTPropertySetterSemanticsCopy;
-    if([self hasAttribute: @"&"]) return RTPropertySetterSemanticsRetain;
+    if([self hasAttribute: RTPropertyCopyAttribute]) return RTPropertySetterSemanticsCopy;
+    if([self hasAttribute: RTPropertyRetainAttribute]) return RTPropertySetterSemanticsRetain;
     return RTPropertySetterSemanticsAssign;
 }
 
 - (BOOL)isNonAtomic
 {
-    return [self hasAttribute: @"N"];
+    return [self hasAttribute: RTPropertyNonAtomicAttribute];
 }
 
 - (BOOL)isDynamic
 {
-    return [self hasAttribute: @"D"];
+    return [self hasAttribute: RTPropertyDynamicAttribute];
 }
 
 - (BOOL)isWeakReference
 {
-    return [self hasAttribute: @"W"];
+    return [self hasAttribute: RTPropertyWeakReferenceAttribute];
 }
 
 - (BOOL)isEligibleForGarbageCollection
 {
-    return [self hasAttribute: @"P"];
+    return [self hasAttribute: RTPropertyEligibleForGarbageCollectionAttribute];
 }
 
 - (NSString *)contentOfAttribute: (NSString *)code
 {
-    for(NSString *encoded in _attributes)
-        if([encoded hasPrefix: code]) return [encoded substringFromIndex: 1];
-    return nil;
+    return [_attrs objectForKey:code];
 }
 
 - (SEL)customGetter
 {
-    return NSSelectorFromString([self contentOfAttribute: @"G"]);
+    return NSSelectorFromString([self contentOfAttribute: RTPropertyCustomGetterAttribute]);
 }
 
 - (SEL)customSetter
 {
-    return NSSelectorFromString([self contentOfAttribute: @"G"]);
+    return NSSelectorFromString([self contentOfAttribute: RTPropertyCustomSetterAttribute]);
 }
 
 - (NSString *)typeEncoding
 {
-    return [self contentOfAttribute: @"T"];
+    return [self contentOfAttribute: RTPropertyTypeEncodingAttribute];
 }
 
 - (NSString *)oldTypeEncoding
 {
-    return [self contentOfAttribute: @"t"];
+    return [self contentOfAttribute: RTPropertyOldTypeEncodingAttribute];
 }
 
 - (NSString *)ivarName
 {
-    return [self contentOfAttribute: @"V"];
+    return [self contentOfAttribute: RTPropertyBackingIVarNameAttribute];
 }
 
 @end
@@ -118,10 +137,21 @@
     return [[[self alloc] initWithObjCProperty: property] autorelease];
 }
 
++ (id)propertyWithName: (NSString *)name attributes:(NSDictionary *)attributes
+{
+    return [[[self alloc] initWithName: name attributes: attributes] autorelease];
+}
+
 - (id)initWithObjCProperty: (objc_property_t)property
 {
     [self release];
     return [[_RTObjCProperty alloc] initWithObjCProperty: property];
+}
+
+- (id)initWithName: (NSString *)name attributes:(NSDictionary *)attributes
+{
+    [self release];
+    return [[_RTObjCProperty alloc] initWithName: name attributes: attributes];
 }
 
 - (NSString *)description
@@ -221,3 +251,16 @@
 }
 
 @end
+
+NSString * const RTPropertyTypeEncodingAttribute                  = @"T";
+NSString * const RTPropertyBackingIVarNameAttribute               = @"V";
+NSString * const RTPropertyCopyAttribute                          = @"C";
+NSString * const RTPropertyCustomGetterAttribute                  = @"G";
+NSString * const RTPropertyCustomSetterAttribute                  = @"S";
+NSString * const RTPropertyDynamicAttribute                       = @"D";
+NSString * const RTPropertyEligibleForGarbageCollectionAttribute  = @"P";
+NSString * const RTPropertyNonAtomicAttribute                     = @"N";
+NSString * const RTPropertyOldTypeEncodingAttribute               = @"t";
+NSString * const RTPropertyReadOnlyAttribute                      = @"R";
+NSString * const RTPropertyRetainAttribute                        = @"&";
+NSString * const RTPropertyWeakReferenceAttribute                 = @"W";
