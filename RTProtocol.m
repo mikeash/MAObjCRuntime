@@ -71,7 +71,7 @@
 - (BOOL)isEqual: (id)other
 {
     return [other isKindOfClass: [RTProtocol class]] &&
-           [[self objCProtocol] isEqual: [other objCProtocol]];
+           protocol_isEqual([self objCProtocol], [other objCProtocol]);
 }
 
 - (NSUInteger)hash
