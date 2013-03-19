@@ -209,7 +209,7 @@
 {
     NSParameterAssert([[self signature] hasPrefix: [NSString stringWithUTF8String: @encode(id)]]);
     
-    id retVal;
+    id retVal = nil;
     
     va_list args;
     va_start(args, target);
@@ -235,7 +235,7 @@
 {
     NSParameterAssert([[method signature] hasPrefix: [NSString stringWithUTF8String: @encode(id)]]);
     
-    id retVal;
+    id retVal = nil;
     
     va_list args;
     va_start(args, method);
@@ -258,7 +258,7 @@
     RTMethod *method = [[self rt_class] rt_methodForSelector: sel];
     NSParameterAssert([[method signature] hasPrefix: [NSString stringWithUTF8String: @encode(id)]]);
     
-    id retVal;
+    id retVal = nil;
     
     va_list args;
     va_start(args, sel);
