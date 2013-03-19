@@ -103,6 +103,7 @@
 
 - (id)initWithName: (NSString *)name typeEncoding: (NSString *)typeEncoding
 {
+    [self release];
     return [[_RTComponentsIvar alloc] initWithName: name typeEncoding: typeEncoding];
 }
 
