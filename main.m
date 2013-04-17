@@ -185,7 +185,7 @@ static void TestProtocolQuery(void)
     NSArray *protocols = [SampleClass rt_protocols];
     TEST_ASSERT([[protocols valueForKey: @"name"] containsObject: @"SampleProtocol"]);
     
-    Protocol *protocol = [RTProtocol protocolWithObjCProtocol: NSProtocolFromString(@"SampleProtocol")];
+    RTProtocol *protocol = [RTProtocol protocolWithObjCProtocol: NSProtocolFromString(@"SampleProtocol")];
     TEST_ASSERT([[protocol incorporatedProtocols] containsObject: [RTProtocol protocolWithObjCProtocol: NSProtocolFromString(@"NSObject")]]);
     TEST_ASSERT([[[protocol methodsRequired: YES instance: YES] valueForKey: @"selectorName"] containsObject: @"requiredInstanceMethod"]);
     TEST_ASSERT([[[protocol methodsRequired: YES instance: NO] valueForKey: @"selectorName"] containsObject: @"requiredClassMethod"]);
