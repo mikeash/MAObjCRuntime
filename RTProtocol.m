@@ -105,7 +105,12 @@
 
 - (NSSet *)recursivelyIncorporatedProtocols
 {
-    return nil;
+    NSArray *incorporatedProtocols = [self incorporatedProtocols];
+    NSMutableSet *protocols = [NSMutableSet setWithArray:incorporatedProtocols];
+    for (RTProtocol *protocol in incorporatedProtocols) {
+        [protocols unionSet:[protocol recursivelyIncorporatedProtocols]];
+    }
+    return protocols;
 }
 
 - (NSArray *)methodsRequired: (BOOL)isRequiredMethod instance: (BOOL)isInstanceMethod
