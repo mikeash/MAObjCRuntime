@@ -103,6 +103,11 @@
     return array;
 }
 
+- (NSSet *)recursivelyIncorporatedProtocols
+{
+    return nil;
+}
+
 - (NSArray *)methodsRequired: (BOOL)isRequiredMethod instance: (BOOL)isInstanceMethod
 {
     unsigned int count;

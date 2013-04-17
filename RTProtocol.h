@@ -18,6 +18,7 @@
 - (Protocol *)objCProtocol;
 - (NSString *)name;
 - (NSArray *)incorporatedProtocols;
+- (NSSet *)recursivelyIncorporatedProtocols;
 - (NSArray *)methodsRequired: (BOOL)isRequiredMethod instance: (BOOL)isInstanceMethod;
 
 @end

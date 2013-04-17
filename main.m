@@ -193,6 +193,26 @@ static void TestProtocolQuery(void)
     TEST_ASSERT([[[protocol methodsRequired: NO instance: NO] valueForKey: @"selectorName"] containsObject: @"optionalClassMethod"]);
 }
 
+@protocol SecondSampleProtocol <NSObject>
+@end
+@protocol SampleCompositeProtocol <SampleProtocol,SecondSampleProtocol>
+@end
+@protocol SampleRecursivelyIncorporatingProtocol <SampleCompositeProtocol>
+@end
+
+static void TestRecursivelyIncorporatedProtocolQuery(void)
+{
+    RTProtocol *compositeProtocol = [RTProtocol protocolWithObjCProtocol:@protocol(SampleRecursivelyIncorporatingProtocol)];
+    NSSet *adoptedProtocols = [compositeProtocol recursivelyIncorporatedProtocols];
+    NSSet *adoptedProtocolsEtalon = [NSSet setWithObjects:
+                                     [RTProtocol protocolWithObjCProtocol:@protocol(SampleCompositeProtocol)],
+                                     [RTProtocol protocolWithObjCProtocol:@protocol(SampleProtocol)],
+                                     [RTProtocol protocolWithObjCProtocol:@protocol(SecondSampleProtocol)],
+                                     [RTProtocol protocolWithObjCProtocol:@protocol(NSObject)],
+                                     nil];
+    TEST_ASSERT([adoptedProtocolsEtalon isEqualToSet:adoptedProtocols]);
+}
+
 static void TestIvarQuery(void)
 {
     NSArray *ivars = [SampleClass rt_ivars];
@@ -339,6 +359,7 @@ int main(int argc, char **argv)
             TEST(TestMethodFetching);
             TEST(TestSetMethod);
             TEST(TestProtocolQuery);
+            TEST(TestRecursivelyIncorporatedProtocolQuery);
             TEST(TestIvarQuery);
             TEST(TestPropertyQuery);
 #if __MAC_OS_X_VERSION_MIN_REQUIRED >= 1070
