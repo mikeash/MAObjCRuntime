@@ -5,7 +5,8 @@
 
 - (void)testAll
 {
-    main(0, nil);
+    BOOL failed = main(0, nil);
+    STAssertFalse(failed, @"Tests failed!");
 }
 
 @end
