@@ -115,18 +115,32 @@
 
 - (NSArray *)methodsRequired: (BOOL)isRequiredMethod instance: (BOOL)isInstanceMethod
 {
-    unsigned int count;
-    struct objc_method_description *methods = protocol_copyMethodDescriptionList([self objCProtocol], isRequiredMethod, isInstanceMethod, &count);
-    
-    NSMutableArray *array = [NSMutableArray array];
-    for(unsigned i = 0; i < count; i++)
-    {
-        NSString *signature = [NSString stringWithCString: methods[i].types encoding: [NSString defaultCStringEncoding]];
-        [array addObject: [RTMethod methodWithSelector: methods[i].name implementation: NULL signature: signature]];
+    return [self methodsRequired:isRequiredMethod instance:isInstanceMethod incorporated:NO];
+}
+
+- (NSArray *)methodsRequired: (BOOL)isRequiredMethod
+                    instance: (BOOL)isInstanceMethod
+                incorporated: (BOOL)recursivelyIncludeIncorporated
+{
+    NSMutableSet *protocols = [NSMutableSet setWithObject:self];
+    if (recursivelyIncludeIncorporated) {
+        [protocols unionSet:[self recursivelyIncorporatedProtocols]];
     }
-    
-    free(methods);
-    return array;
+    NSMutableSet *set = [NSMutableSet set];
+    for (RTProtocol *protocol in protocols)
+    {
+        unsigned int count;
+        struct objc_method_description *methods = protocol_copyMethodDescriptionList([protocol objCProtocol], isRequiredMethod, isInstanceMethod, &count);
+        
+        for(unsigned i = 0; i < count; i++)
+        {
+            NSString *signature = [NSString stringWithCString: methods[i].types encoding: [NSString defaultCStringEncoding]];
+            [set addObject: [RTMethod methodWithSelector: methods[i].name implementation: NULL signature: signature]];
+        }
+        
+        free(methods);
+    }
+    return [set allObjects];
 }
 
 @end

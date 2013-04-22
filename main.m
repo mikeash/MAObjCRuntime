@@ -211,6 +211,7 @@ static void TestRecursivelyIncorporatedProtocolQuery(void)
                                      [RTProtocol protocolWithObjCProtocol:@protocol(NSObject)],
                                      nil];
     TEST_ASSERT([adoptedProtocolsEtalon isEqualToSet:adoptedProtocols]);
+    TEST_ASSERT([[[compositeProtocol methodsRequired: YES instance: YES incorporated:YES] valueForKey: @"selectorName"] containsObject: @"requiredInstanceMethod"]);
 }
 
 static void TestIvarQuery(void)

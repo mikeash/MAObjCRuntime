@@ -20,5 +20,8 @@
 - (NSArray *)incorporatedProtocols;
 - (NSSet *)recursivelyIncorporatedProtocols;
 - (NSArray *)methodsRequired: (BOOL)isRequiredMethod instance: (BOOL)isInstanceMethod;
+- (NSArray *)methodsRequired: (BOOL)isRequiredMethod
+                    instance: (BOOL)isInstanceMethod
+                incorporated: (BOOL)recursivelyIncludeIncorporated;
 
 @end
