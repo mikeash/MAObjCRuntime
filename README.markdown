@@ -40,7 +40,7 @@ You can add new methods using `+rt_addMethod:`. You can modify the implementatio
         return @"HELLO WORLD!";
     }
     
-    Method *description = [NSObject rt_methodForSelector: @selector(description)];
+    RTMethod *description = [NSObject rt_methodForSelector: @selector(description)];
     [description setImplementation: (IMP)NewDescription];
 
 You can create new classes using `+rt_createSubclassNamed:` or `+rt_createUnregisteredSubclassNamed:`. Note that if you want to add instance variables to a class then you have to use the Unregistered version, and add them before registering the class.
