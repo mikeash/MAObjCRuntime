@@ -107,6 +107,33 @@ static void TestMethodList(void)
     RTMethod *method = [methods objectAtIndex: index];
     TEST_ASSERT([method implementation] == [NSObject instanceMethodForSelector: sel]);
     TEST_ASSERT([[NSMethodSignature signatureWithObjCTypes: [[method signature] UTF8String]] isEqual: [NSObject instanceMethodSignatureForSelector: sel]]);
+
+    sel = @selector(alloc);
+    index = [methods indexOfObjectPassingTest: ^BOOL (id obj, NSUInteger idx, BOOL *stop) {
+        return [obj selector] == sel;
+    }];
+    TEST_ASSERT(index == NSNotFound);
+}
+
+static void TestClassMethodList(void)
+{
+    NSArray *methods = [NSObject rt_classMethods];
+    
+    SEL sel = @selector(alloc);
+    NSUInteger index = [methods indexOfObjectPassingTest: ^BOOL (id obj, NSUInteger idx, BOOL *stop) {
+        return [obj selector] == sel;
+    }];
+    TEST_ASSERT(index != NSNotFound);
+
+    RTMethod *method = [methods objectAtIndex: index];
+    TEST_ASSERT([method implementation] == [NSObject methodForSelector: sel]);
+    TEST_ASSERT([[NSMethodSignature signatureWithObjCTypes: [[method signature] UTF8String]] isEqual: [NSObject methodSignatureForSelector: sel]]);
+    
+    sel = @selector(performSelector:withObject:afterDelay:);
+    index = [methods indexOfObjectPassingTest: ^BOOL (id obj, NSUInteger idx, BOOL *stop) {
+        return [obj selector] == sel;
+    }];
+    TEST_ASSERT(index == NSNotFound);
 }
 
 static void TestMethodFetching(void)
@@ -335,6 +362,7 @@ int main(int argc, char **argv)
             TEST(TestInstanceSize);
             TEST(TestSetClass);
             TEST(TestMethodList);
+            TEST(TestClassMethodList);
             TEST(TestAddMethod);
             TEST(TestMethodFetching);
             TEST(TestSetMethod);

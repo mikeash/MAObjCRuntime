@@ -106,6 +106,20 @@
     return array;
 }
 
++ (NSArray *)rt_classMethods
+{
+    unsigned int count;
+    Method *methods = class_copyMethodList(object_getClass(self), &count);
+    
+    NSMutableArray *array = [NSMutableArray array];
+    for(unsigned i = 0; i < count; i++)
+        [array addObject: [RTMethod methodWithObjCMethod: methods[i]]];
+    
+    free(methods);
+    return array;
+}
+
+
 + (RTMethod *)rt_methodForSelector: (SEL)sel
 {
     Method m = class_getInstanceMethod(self, sel);
