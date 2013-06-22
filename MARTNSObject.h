@@ -24,6 +24,7 @@
 + (NSArray *)rt_protocols;
 
 + (NSArray *)rt_methods;
++ (NSArray *)rt_classMethods;
 + (RTMethod *)rt_methodForSelector: (SEL)sel;
 
 + (void)rt_addMethod: (RTMethod *)method;
