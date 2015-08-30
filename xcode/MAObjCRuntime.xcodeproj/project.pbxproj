@@ -8,7 +8,6 @@
 
 /* Begin PBXBuildFile section */
 		22A07AE515241A3B008A2A36 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 22A07AE415241A3B008A2A36 /* Foundation.framework */; };
-		22A07AF315241A3B008A2A36 /* SenTestingKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 22A07AF215241A3B008A2A36 /* SenTestingKit.framework */; };
 		22A07AF515241A3B008A2A36 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 22A07AF415241A3B008A2A36 /* UIKit.framework */; };
 		22A07AF615241A3B008A2A36 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 22A07AE415241A3B008A2A36 /* Foundation.framework */; };
 		22A07AF915241A3B008A2A36 /* libMAObjCRuntime_iOS.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 22A07AE215241A3B008A2A36 /* libMAObjCRuntime_iOS.a */; };
@@ -43,8 +42,7 @@
 		08FB779EFE84155DC02AAC07 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = /System/Library/Frameworks/Foundation.framework; sourceTree = "<absolute>"; };
 		22A07AE215241A3B008A2A36 /* libMAObjCRuntime_iOS.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libMAObjCRuntime_iOS.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		22A07AE415241A3B008A2A36 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
-		22A07AF115241A3B008A2A36 /* MAObjCRuntime_iOSTests.octest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = MAObjCRuntime_iOSTests.octest; sourceTree = BUILT_PRODUCTS_DIR; };
-		22A07AF215241A3B008A2A36 /* SenTestingKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SenTestingKit.framework; path = Library/Frameworks/SenTestingKit.framework; sourceTree = DEVELOPER_DIR; };
+		22A07AF115241A3B008A2A36 /* MAObjCRuntime_iOSTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = MAObjCRuntime_iOSTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		22A07AF415241A3B008A2A36 /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = Library/Frameworks/UIKit.framework; sourceTree = DEVELOPER_DIR; };
 		22A07B1015241B00008A2A36 /* Test_iOS.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Test_iOS.h; path = ../Test_iOS.h; sourceTree = "<group>"; };
 		22A07B1115241B00008A2A36 /* Test_iOS.h.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = Test_iOS.h.m; path = ../Test_iOS.h.m; sourceTree = "<group>"; };
@@ -78,7 +76,6 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				22A07AF315241A3B008A2A36 /* SenTestingKit.framework in Frameworks */,
 				22A07AF515241A3B008A2A36 /* UIKit.framework in Frameworks */,
 				22A07AF615241A3B008A2A36 /* Foundation.framework in Frameworks */,
 				22A07AF915241A3B008A2A36 /* libMAObjCRuntime_iOS.a in Frameworks */,
@@ -135,7 +132,7 @@
 			children = (
 				8DD76FA10486AA7600D96B5E /* MAObjCRuntime */,
 				22A07AE215241A3B008A2A36 /* libMAObjCRuntime_iOS.a */,
-				22A07AF115241A3B008A2A36 /* MAObjCRuntime_iOSTests.octest */,
+				22A07AF115241A3B008A2A36 /* MAObjCRuntime_iOSTests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -144,7 +141,6 @@
 			isa = PBXGroup;
 			children = (
 				22A07AE415241A3B008A2A36 /* Foundation.framework */,
-				22A07AF215241A3B008A2A36 /* SenTestingKit.framework */,
 				22A07AF415241A3B008A2A36 /* UIKit.framework */,
 			);
 			name = Frameworks;
@@ -196,8 +192,8 @@
 			);
 			name = MAObjCRuntime_iOSTests;
 			productName = MAObjCRuntime_iOSTests;
-			productReference = 22A07AF115241A3B008A2A36 /* MAObjCRuntime_iOSTests.octest */;
-			productType = "com.apple.product-type.bundle";
+			productReference = 22A07AF115241A3B008A2A36 /* MAObjCRuntime_iOSTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
 		};
 		8DD76F960486AA7600D96B5E /* MAObjCRuntime */ = {
 			isa = PBXNativeTarget;
@@ -222,7 +218,8 @@
 		08FB7793FE84155DC02AAC07 /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
-				LastUpgradeCheck = 0460;
+				LastTestingUpgradeCheck = 0700;
+				LastUpgradeCheck = 0700;
 			};
 			buildConfigurationList = 1DEB927808733DD40010E9CD /* Build configuration list for PBXProject "MAObjCRuntime" */;
 			compatibilityVersion = "Xcode 3.2";
@@ -350,7 +347,7 @@
 		1DEB927908733DD40010E9CD /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ARCHS = "$(ARCHS_STANDARD_32_64_BIT)";
+				ENABLE_TESTABILITY = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_OPTIMIZATION_LEVEL = 0;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
@@ -363,7 +360,6 @@
 		1DEB927A08733DD40010E9CD /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ARCHS = "$(ARCHS_STANDARD_32_64_BIT)";
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
@@ -375,7 +371,6 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
-				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
 				COPY_PHASE_STRIP = NO;
 				DSTROOT = /tmp/MAObjCRuntime_iOS.dst;
 				GCC_DYNAMIC_NO_PIC = NO;
@@ -400,7 +395,6 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
-				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
 				COPY_PHASE_STRIP = YES;
 				DSTROOT = /tmp/MAObjCRuntime_iOS.dst;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
@@ -420,11 +414,10 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
-				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
 				COPY_PHASE_STRIP = NO;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(SDKROOT)/Developer/Library/Frameworks",
-					"$(DEVELOPER_LIBRARY_DIR)/Frameworks",
+					"$(inherited)",
 				);
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
@@ -443,7 +436,6 @@
 				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = iphoneos;
-				WRAPPER_EXTENSION = octest;
 			};
 			name = Debug;
 		};
@@ -451,11 +443,10 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
-				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
 				COPY_PHASE_STRIP = YES;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(SDKROOT)/Developer/Library/Frameworks",
-					"$(DEVELOPER_LIBRARY_DIR)/Frameworks",
+					"$(inherited)",
 				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = MAObjCRuntime_Prefix.pch;
@@ -469,7 +460,6 @@
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = iphoneos;
 				VALIDATE_PRODUCT = YES;
-				WRAPPER_EXTENSION = octest;
 			};
 			name = Release;
 		};
