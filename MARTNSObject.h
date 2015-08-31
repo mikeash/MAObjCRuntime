@@ -24,6 +24,7 @@
 + (NSArray *)rt_protocols;
 
 + (NSArray *)rt_methods;
++ (NSArray *)rt_instanceMethods;
 + (RTMethod *)rt_methodForSelector: (SEL)sel;
 
 + (void)rt_addMethod: (RTMethod *)method;
@@ -43,5 +44,6 @@
 // directly hits up the isa) so it will always tell the truth
 - (Class)rt_class;
 - (Class)rt_setClass: (Class)newClass;
+- (NSArray *)rt_methods;
 
 @end

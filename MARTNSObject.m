@@ -10,6 +10,12 @@
 #import "RTUnregisteredClass.h"
 
 
+@interface NSObject (MARuntimePrivate)
+
++ (NSArray *)rt_methodsForClass:(Class)cls;
+
+@end
+
 @implementation NSObject (MARuntime)
 
 + (NSArray *)rt_subclasses
@@ -93,10 +99,10 @@
     return array;
 }
 
-+ (NSArray *)rt_methods
++ (NSArray *)rt_methodsForClass:(Class)cls
 {
     unsigned int count;
-    Method *methods = class_copyMethodList(self, &count);
+    Method *methods = class_copyMethodList(cls, &count);
     
     NSMutableArray *array = [NSMutableArray array];
     for(unsigned i = 0; i < count; i++)
@@ -104,6 +110,14 @@
     
     free(methods);
     return array;
+}
+
++ (NSArray *)rt_methods {
+    return [self rt_methodsForClass:object_getClass(self)];
+}
+
++ (NSArray *)rt_instanceMethods {
+    return [self rt_methodsForClass:self];
 }
 
 + (RTMethod *)rt_methodForSelector: (SEL)sel
@@ -174,6 +188,10 @@
 - (Class)rt_setClass: (Class)newClass
 {
     return object_setClass(self, newClass);
+}
+
+- (NSArray *)rt_methods {
+    return [[self rt_class] rt_instanceMethods];
 }
 
 @end
