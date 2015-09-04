@@ -244,6 +244,29 @@ static void TestAddProperty(void)
 }
 #endif
 
+@interface SampleClassWithProperty : NSObject{
+    NSObject<SampleProtocol,NSCopying> *samplePropertyWithProtocols;
+    NSObject *sampleProperty;
+}
+@property (nonatomic,retain) NSObject<SampleProtocol,NSCopying> *samplePropertyWithProtocols;
+@property (nonatomic,retain) NSObject *sampleProperty;
+@end
+@implementation SampleClassWithProperty
+@synthesize samplePropertyWithProtocols,sampleProperty;
+@end
+
+static void TestPropertyClassAndProtocols(void){
+    RTProperty *property = [SampleClassWithProperty rt_propertyForName:@"samplePropertyWithProtocols"];
+    TEST_ASSERT([NSObject class] == property.typeClass);
+    NSArray *protocols = property.typeProtocols;
+    TEST_ASSERT(2 == protocols.count);
+    TEST_ASSERT([protocols containsObject:[RTProtocol protocolWithObjCProtocol:@protocol(SampleProtocol)]]);
+    TEST_ASSERT([protocols containsObject:[RTProtocol protocolWithObjCProtocol:@protocol(NSCopying)]]);
+    TEST_ASSERT([NSObject class] == [SampleClassWithProperty rt_propertyForName:@"sampleProperty"].typeClass);
+    TEST_ASSERT(nil == [SampleClass rt_propertyForName:@"someProperty"].typeClass);
+    TEST_ASSERT(0 == [SampleClass rt_propertyForName:@"someProperty"].typeProtocols.count);
+}
+
 static void TestIvarAdd(void)
 {
     RTUnregisteredClass *unreg = [NSObject rt_createUnregisteredSubclassNamed: @"IvarAddTester"];
@@ -344,6 +367,7 @@ int main(int argc, char **argv)
 #if __MAC_OS_X_VERSION_MIN_REQUIRED >= 1070
             TEST(TestAddProperty);
 #endif
+            TEST(TestPropertyClassAndProtocols);
             TEST(TestIvarAdd);
             TEST(TestEquality);
             TEST(TestMessageSending);

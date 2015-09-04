@@ -39,6 +39,10 @@ RTPropertySetterSemantics;
 - (NSString *)typeEncoding;
 - (NSString *)oldTypeEncoding;
 - (NSString *)ivarName;
+// Class specified in typeEncoding or nil
+- (Class)typeClass;
+// Array of RTProtocol instances or an empty array if no protocol specified in typeEncoding
+- (NSArray *)typeProtocols;
 
 @end
 

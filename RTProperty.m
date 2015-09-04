@@ -1,6 +1,6 @@
 
 #import "RTProperty.h"
-
+#import "RTProtocol.h"
 
 @interface _RTObjCProperty : RTProperty
 {
@@ -153,6 +153,45 @@
     return [self contentOfAttribute: RTPropertyBackingIVarNameAttribute];
 }
 
+- (Class)typeClass
+{
+    NSString *typeEncoding = [self typeEncoding];
+    NSLog(@"%@",typeEncoding);
+    if (![typeEncoding hasPrefix:@"@"])
+        return nil;
+    NSRange quoteStart = [typeEncoding rangeOfString:@"\""];
+    if (NSNotFound == quoteStart.location)
+        return nil;
+    NSUInteger classStart = quoteStart.location + 1;
+    NSRange protocolsStart = [typeEncoding rangeOfString:@"<"];
+    NSUInteger classEnd;
+    if (NSNotFound != protocolsStart.location)
+    {
+        classEnd = protocolsStart.location-1;
+    }else{
+        classEnd = [typeEncoding rangeOfString:@"\"" options:NSBackwardsSearch].location - 1;
+    }
+    NSString *className = [typeEncoding substringWithRange:NSMakeRange(classStart, 1+classEnd-classStart)];
+    return NSClassFromString(className);
+}
+
+- (NSArray *)typeProtocols
+{
+    NSString *typeEncoding = [self typeEncoding];
+    if (![typeEncoding hasPrefix:@"@"])
+        return [NSArray array];
+    NSRange parenthesisStart = [typeEncoding rangeOfString:@"<"];
+    NSRange parenthesisEnd = [typeEncoding rangeOfString:@">" options:NSBackwardsSearch];
+    if (NSNotFound == parenthesisStart.location || NSNotFound == parenthesisEnd.location)
+        return [NSArray array];
+    NSString *protocolsString = [typeEncoding substringWithRange:NSMakeRange(parenthesisStart.location+1, parenthesisEnd.location-parenthesisStart.location-1)];
+    NSMutableArray *protocols = [NSMutableArray array];
+    for (NSString *name in [protocolsString componentsSeparatedByString:@"><"]) {
+        [protocols addObject:[RTProtocol protocolWithName:name]];
+    }    
+    return protocols;
+}
+
 @end
 
 @implementation RTProperty
@@ -282,6 +321,18 @@
 }
 
 - (NSString *)ivarName
+{
+    [self doesNotRecognizeSelector: _cmd];
+    return nil;
+}
+
+- (Class)typeClass
+{
+    [self doesNotRecognizeSelector: _cmd];
+    return nil;
+}
+
+- (NSArray *)typeProtocols
 {
     [self doesNotRecognizeSelector: _cmd];
     return nil;
