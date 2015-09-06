@@ -185,12 +185,33 @@ static void TestProtocolQuery(void)
     NSArray *protocols = [SampleClass rt_protocols];
     TEST_ASSERT([[protocols valueForKey: @"name"] containsObject: @"SampleProtocol"]);
     
-    Protocol *protocol = [RTProtocol protocolWithObjCProtocol: NSProtocolFromString(@"SampleProtocol")];
+    RTProtocol *protocol = [RTProtocol protocolWithObjCProtocol: NSProtocolFromString(@"SampleProtocol")];
     TEST_ASSERT([[protocol incorporatedProtocols] containsObject: [RTProtocol protocolWithObjCProtocol: NSProtocolFromString(@"NSObject")]]);
     TEST_ASSERT([[[protocol methodsRequired: YES instance: YES] valueForKey: @"selectorName"] containsObject: @"requiredInstanceMethod"]);
     TEST_ASSERT([[[protocol methodsRequired: YES instance: NO] valueForKey: @"selectorName"] containsObject: @"requiredClassMethod"]);
     TEST_ASSERT([[[protocol methodsRequired: NO instance: YES] valueForKey: @"selectorName"] containsObject: @"optionalInstanceMethod"]);
     TEST_ASSERT([[[protocol methodsRequired: NO instance: NO] valueForKey: @"selectorName"] containsObject: @"optionalClassMethod"]);
+}
+
+@protocol SecondSampleProtocol <NSObject>
+@end
+@protocol SampleCompositeProtocol <SampleProtocol,SecondSampleProtocol>
+@end
+@protocol SampleRecursivelyIncorporatingProtocol <SampleCompositeProtocol>
+@end
+
+static void TestRecursivelyIncorporatedProtocolQuery(void)
+{
+    RTProtocol *compositeProtocol = [RTProtocol protocolWithObjCProtocol:@protocol(SampleRecursivelyIncorporatingProtocol)];
+    NSSet *adoptedProtocols = [compositeProtocol recursivelyIncorporatedProtocols];
+    NSSet *adoptedProtocolsEtalon = [NSSet setWithObjects:
+                                     [RTProtocol protocolWithObjCProtocol:@protocol(SampleCompositeProtocol)],
+                                     [RTProtocol protocolWithObjCProtocol:@protocol(SampleProtocol)],
+                                     [RTProtocol protocolWithObjCProtocol:@protocol(SecondSampleProtocol)],
+                                     [RTProtocol protocolWithObjCProtocol:@protocol(NSObject)],
+                                     nil];
+    TEST_ASSERT([adoptedProtocolsEtalon isEqualToSet:adoptedProtocols]);
+    TEST_ASSERT([[[compositeProtocol methodsRequired: YES instance: YES incorporated:YES] valueForKey: @"selectorName"] containsObject: @"requiredInstanceMethod"]);
 }
 
 static void TestIvarQuery(void)
@@ -339,6 +360,7 @@ int main(int argc, char **argv)
             TEST(TestMethodFetching);
             TEST(TestSetMethod);
             TEST(TestProtocolQuery);
+            TEST(TestRecursivelyIncorporatedProtocolQuery);
             TEST(TestIvarQuery);
             TEST(TestPropertyQuery);
 #if __MAC_OS_X_VERSION_MIN_REQUIRED >= 1070
