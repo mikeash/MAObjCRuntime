@@ -325,6 +325,7 @@ static void TestMessageSendingNSObjectCategory(void)
 
 int main(int argc, char **argv)
 {
+    __block BOOL failed = NO;
     @try
     {
         WithPool(^{
@@ -350,15 +351,19 @@ int main(int argc, char **argv)
             TEST(TestMessageSendingNSObjectCategory);
             
             NSString *message;
-            if(gFailureCount)
+            if(gFailureCount){
                 message = [NSString stringWithFormat: @"FAILED: %d total assertion failure%s", gFailureCount, gFailureCount > 1 ? "s" : ""];
-            else
+                failed = YES;
+            }else{
                 message = @"SUCCESS";
+            }
             NSLog(@"Tests complete: %@", message);
         });
     }
     @catch(id exception)
     {
         NSLog(@"FAILED: exception: %@", exception);
+        failed = YES;
     }
+    return failed;
 }
