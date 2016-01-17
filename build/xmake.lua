@@ -22,7 +22,7 @@ if modes("release") then
 end
 
 -- add target
-add_target("console")
+add_target("all")
 
     -- set kind
     set_kind("binary")
