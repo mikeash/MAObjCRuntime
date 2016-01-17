@@ -10,7 +10,7 @@
 
 @interface NSObject (MARuntime)
 
-// includes the receiver
+/*  includes the receiver */
 + (NSArray *)rt_subclasses;
 
 + (RTUnregisteredClass *)rt_createUnregisteredSubclassNamed: (NSString *)name;
@@ -37,10 +37,10 @@
 + (BOOL)rt_addProperty: (RTProperty *)property;
 #endif
 
-// Apple likes to fiddle with -class to hide their dynamic subclasses
-// e.g. KVO subclasses, so [obj class] can lie to you
-// rt_class is a direct call to object_getClass (which in turn
-// directly hits up the isa) so it will always tell the truth
+/*  Apple likes to fiddle with -class to hide their dynamic subclasses */
+/*  e.g. KVO subclasses, so [obj class] can lie to you */
+/*  rt_class is a direct call to object_getClass (which in turn */
+/*  directly hits up the isa) so it will always tell the truth */
 - (Class)rt_class;
 - (Class)rt_setClass: (Class)newClass;
 
