@@ -15,18 +15,18 @@ Querying
 
 You can query any class's methods, instance variables, or other attributes using the methods provided. For example:
 
-    // get all subclasses of a class
+    /*  get all subclasses of a class */
     NSArray *subclasses = [MyClass rt_subclasses];
     
-    // check out the methods on NSString
+    /*  check out the methods on NSString */
     NSArray *methods = [NSString rt_methods];
     for(RTMethod *method in methods)
         NSLog(@"%@", method);
     
-    // does it have any ivars?
+    /*  does it have any ivars? */
     NSLog(@"%@", [NSString rt_ivars]);
     
-    // how big is a constant string instance?
+    /*  how big is a constant string instance? */
     NSLog(@"%ld", (long)[[@"foo" rt_class] rt_instanceSize]);
 
 Modifying
@@ -34,7 +34,7 @@ Modifying
 
 You can add new methods using `+rt_addMethod:`. You can modify the implementation of an existing method using the `-setImplementation:` method on `RTMethod`. Example:
 
-    // swizzle out -[NSObject description] (don't do this)
+    /*  swizzle out -[NSObject description] (don't do this) */
     static NSString *NewDescription(id self, SEL _cmd)
     {
         return @"HELLO WORLD!";
