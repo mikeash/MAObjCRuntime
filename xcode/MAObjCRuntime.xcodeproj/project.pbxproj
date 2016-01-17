@@ -18,6 +18,8 @@
 		22A07B0E15241A7A008A2A36 /* RTProtocol.m in Sources */ = {isa = PBXBuildFile; fileRef = 794569F11481810F006AD2EB /* RTProtocol.m */; };
 		22A07B0F15241A7A008A2A36 /* RTUnregisteredClass.m in Sources */ = {isa = PBXBuildFile; fileRef = 794569F31481810F006AD2EB /* RTUnregisteredClass.m */; };
 		22A07B1215241B00008A2A36 /* Test_iOS.h.m in Sources */ = {isa = PBXBuildFile; fileRef = 22A07B1115241B00008A2A36 /* Test_iOS.h.m */; };
+		3869ECDC1C4BB8950020B769 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 794569E71481810F006AD2EB /* main.m */; };
+		3869ECDD1C4BB8960020B769 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 794569E71481810F006AD2EB /* main.m */; };
 		794569F41481810F006AD2EB /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 794569E71481810F006AD2EB /* main.m */; };
 		794569F51481810F006AD2EB /* MARTNSObject.m in Sources */ = {isa = PBXBuildFile; fileRef = 794569E91481810F006AD2EB /* MARTNSObject.m */; };
 		794569F61481810F006AD2EB /* RTIvar.m in Sources */ = {isa = PBXBuildFile; fileRef = 794569EB1481810F006AD2EB /* RTIvar.m */; };
@@ -47,6 +49,7 @@
 		22A07B1015241B00008A2A36 /* Test_iOS.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Test_iOS.h; path = ../Test_iOS.h; sourceTree = "<group>"; };
 		22A07B1115241B00008A2A36 /* Test_iOS.h.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = Test_iOS.h.m; path = ../Test_iOS.h.m; sourceTree = "<group>"; };
 		32A70AAB03705E1F00C91783 /* MAObjCRuntime_Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MAObjCRuntime_Prefix.pch; sourceTree = "<group>"; };
+		3869ECDB1C4BB7C10020B769 /* MAObjCRuntime */ = {isa = PBXFileReference; lastKnownFileType = folder; path = MAObjCRuntime; sourceTree = "<group>"; };
 		794569E71481810F006AD2EB /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = main.m; path = ../main.m; sourceTree = "<group>"; };
 		794569E81481810F006AD2EB /* MARTNSObject.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MARTNSObject.h; path = ../MARTNSObject.h; sourceTree = "<group>"; };
 		794569E91481810F006AD2EB /* MARTNSObject.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = MARTNSObject.m; path = ../MARTNSObject.m; sourceTree = "<group>"; };
@@ -96,6 +99,7 @@
 		08FB7794FE84155DC02AAC07 /* MAObjCRuntime */ = {
 			isa = PBXGroup;
 			children = (
+				3869ECDB1C4BB7C10020B769 /* MAObjCRuntime */,
 				794569E71481810F006AD2EB /* main.m */,
 				794569E81481810F006AD2EB /* MARTNSObject.h */,
 				794569E91481810F006AD2EB /* MARTNSObject.m */,
@@ -279,6 +283,7 @@
 				22A07B0C15241A7A008A2A36 /* RTMethod.m in Sources */,
 				22A07B0D15241A7A008A2A36 /* RTProperty.m in Sources */,
 				22A07B0E15241A7A008A2A36 /* RTProtocol.m in Sources */,
+				3869ECDC1C4BB8950020B769 /* main.m in Sources */,
 				22A07B0F15241A7A008A2A36 /* RTUnregisteredClass.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -287,6 +292,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				3869ECDD1C4BB8960020B769 /* main.m in Sources */,
 				22A07B1215241B00008A2A36 /* Test_iOS.h.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -320,6 +326,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_USE_OPTIMIZATION_PROFILE = YES;
 				COPY_PHASE_STRIP = NO;
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_MODEL_TUNING = G5;
@@ -335,6 +342,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_USE_OPTIMIZATION_PROFILE = YES;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				GCC_MODEL_TUNING = G5;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
