@@ -11,7 +11,7 @@
 @interface NSObject (MARuntime)
 
 // includes the receiver
-+ (NSArray *)rt_subclasses;
++ (NSArray <Class> *)rt_subclasses;
 
 + (RTUnregisteredClass *)rt_createUnregisteredSubclassNamed: (NSString *)name;
 + (Class)rt_createSubclassNamed: (NSString *)name;
@@ -21,17 +21,17 @@
 + (Class)rt_setSuperclass: (Class)newSuperclass;
 + (size_t)rt_instanceSize;
 
-+ (NSArray *)rt_protocols;
++ (NSArray <RTProtocol *> *)rt_protocols;
 
-+ (NSArray *)rt_methods;
++ (NSArray <RTMethod *> *)rt_methods;
 + (RTMethod *)rt_methodForSelector: (SEL)sel;
 
 + (void)rt_addMethod: (RTMethod *)method;
 
-+ (NSArray *)rt_ivars;
++ (NSArray <RTIvar *> *)rt_ivars;
 + (RTIvar *)rt_ivarForName: (NSString *)name;
 
-+ (NSArray *)rt_properties;
++ (NSArray <RTProperty *> *)rt_properties;
 + (RTProperty *)rt_propertyForName: (NSString *)name;
 #if __MAC_OS_X_VERSION_MIN_REQUIRED >= 1070
 + (BOOL)rt_addProperty: (RTProperty *)property;

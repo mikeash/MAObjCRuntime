@@ -29,7 +29,7 @@
 
 @implementation RTProtocol
 
-+ (NSArray *)allProtocols
++ (NSArray <RTProtocol *> *)allProtocols
 {
     unsigned int count;
     Protocol **protocols = objc_copyProtocolList(&count);
@@ -90,7 +90,7 @@
     return [NSString stringWithUTF8String: protocol_getName([self objCProtocol])];
 }
 
-- (NSArray *)incorporatedProtocols
+- (NSArray <RTProtocol *> *)incorporatedProtocols
 {
     unsigned int count;
     Protocol **protocols = protocol_copyProtocolList([self objCProtocol], &count);
@@ -103,7 +103,7 @@
     return array;
 }
 
-- (NSArray *)methodsRequired: (BOOL)isRequiredMethod instance: (BOOL)isInstanceMethod
+- (NSArray <RTMethod *> *)methodsRequired: (BOOL)isRequiredMethod instance: (BOOL)isInstanceMethod
 {
     unsigned int count;
     struct objc_method_description *methods = protocol_copyMethodDescriptionList([self objCProtocol], isRequiredMethod, isInstanceMethod, &count);

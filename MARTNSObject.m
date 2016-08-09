@@ -12,7 +12,7 @@
 
 @implementation NSObject (MARuntime)
 
-+ (NSArray *)rt_subclasses
++ (NSArray <Class> *)rt_subclasses
 {
     Class *buffer = NULL;
     
@@ -80,7 +80,7 @@
     return class_getInstanceSize(self);
 }
 
-+ (NSArray *)rt_protocols
++ (NSArray <RTProtocol *> *)rt_protocols
 {
     unsigned int count;
     Protocol **protocols = class_copyProtocolList(self, &count);
@@ -93,7 +93,7 @@
     return array;
 }
 
-+ (NSArray *)rt_methods
++ (NSArray <RTMethod *> *)rt_methods
 {
     unsigned int count;
     Method *methods = class_copyMethodList(self, &count);
@@ -119,7 +119,7 @@
     class_addMethod(self, [method selector], [method implementation], [[method signature] UTF8String]);
 }
 
-+ (NSArray *)rt_ivars
++ (NSArray <RTIvar *> *)rt_ivars
 {
     unsigned int count;
     Ivar *list = class_copyIvarList(self, &count);
@@ -139,7 +139,7 @@
     return [RTIvar ivarWithObjCIvar: ivar];
 }
 
-+ (NSArray *)rt_properties
++ (NSArray <RTProperty *> *)rt_properties
 {
     unsigned int count;
     objc_property_t *list = class_copyPropertyList(self, &count);
