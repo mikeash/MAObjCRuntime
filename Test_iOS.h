@@ -1,5 +1,5 @@
-#import <SenTestingKit/SenTestingKit.h>
+#import <XCTest/XCTest.h>
 
-@interface Test_iOS : SenTestCase
+@interface Test_iOS : XCTestCase
 
 @end
